@@ -15,15 +15,15 @@ class SIMPLEGAME_API UInventoryPage : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadWrite, Category = "Equipped")
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
 		class UInventoryItem* EquippedWeapon;
-	UPROPERTY(BlueprintReadWrite, Category = "Equipped")
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
 		class UInventoryItem* EquippedHelmet;
-	UPROPERTY(BlueprintReadWrite, Category = "Equipped")
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
 		class UInventoryItem* EquippedArmor;
-	UPROPERTY(BlueprintReadWrite, Category = "Equipped")
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
 		class UInventoryItem* EquippedGloves;
-	UPROPERTY(BlueprintReadWrite, Category = "Equipped")
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
 		class UInventoryItem* EquippedBoots;
 
 public:
