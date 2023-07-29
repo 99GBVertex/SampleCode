@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Containers/StringFwd.h"
-#include "../DesignPattern/Singleton.h"
+#include "DesignPattern/Singleton.h"
 #include "DBManager.generated.h"
 
 class UDataTable;

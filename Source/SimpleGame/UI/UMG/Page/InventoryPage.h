@@ -18,13 +18,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Equipped")
 		class UInventoryItem* EquippedWeapon;
 	UPROPERTY(BlueprintReadWrite, Category = "Equipped")
-		class UInventoryItem* EquippedTorsor;
+		class UInventoryItem* EquippedHelmet;
 	UPROPERTY(BlueprintReadWrite, Category = "Equipped")
-		class UInventoryItem* EquippedPants;
+		class UInventoryItem* EquippedArmor;
 	UPROPERTY(BlueprintReadWrite, Category = "Equipped")
 		class UInventoryItem* EquippedGloves;
 	UPROPERTY(BlueprintReadWrite, Category = "Equipped")
-		class UInventoryItem* EquippedShoes;
+		class UInventoryItem* EquippedBoots;
 
 public:
 	virtual bool Initialize() override;

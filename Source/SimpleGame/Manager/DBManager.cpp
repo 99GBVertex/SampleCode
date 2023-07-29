@@ -17,10 +17,10 @@ void UDBManager::Release()
 
 void UDBManager::LoadDBTables()
 {
-	TArray<FString> FindFileNames;
-	FindDBFiles(FindFileNames);
+	TArray<FString> findFileNames;
+	FindDBFiles(findFileNames);
 
-	for (const FString& findFileName : FindFileNames)
+	for (const FString& findFileName : findFileNames)
 	{
 		UDataTable* dbTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), NULL, *findFileName));
 		if (!DataTables.Contains(dbTable))
