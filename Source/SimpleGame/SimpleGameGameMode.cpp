@@ -12,7 +12,9 @@ ASimpleGameGameMode::ASimpleGameGameMode()
 	}
 }
 
-void ASimpleGameGameMode::StartPlay() {
+void ASimpleGameGameMode::StartPlay() 
+{
+	Super::StartPlay();
 
 	UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), rootUI);
 	if (Widget) {

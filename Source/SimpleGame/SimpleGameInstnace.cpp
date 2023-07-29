@@ -19,6 +19,8 @@ USimpleGameInstnace::~USimpleGameInstnace()
 
 void USimpleGameInstnace::Init()
 {
+	Super::Init();
+
 	UDBManager::Instance();
 	UItemManager::Instance();
 
@@ -27,8 +29,10 @@ void USimpleGameInstnace::Init()
 
 void USimpleGameInstnace::Shutdown()
 {
+	Super::Shutdown();
 }
 
 void USimpleGameInstnace::StartGameInstance()
 {
+	Super::StartGameInstance();
 }
