@@ -90,7 +90,7 @@ void UItemManager::MakeItemDataTable()
 		copyRow.item_mesh_Optr		= row->item_mesh_Optr;
 		copyRow.item_sprite_Optr	= row->item_sprite_Optr;
 		ItemTable.Emplace(MoveTemp(copyRow));
-	}	
+	}
 }
 
 FItemTable* UItemManager::GetItemData(int32 inIndex)

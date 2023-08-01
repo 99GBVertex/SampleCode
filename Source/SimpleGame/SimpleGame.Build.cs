@@ -11,5 +11,8 @@ public class SimpleGame : ModuleRules
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "NavigationSystem", "AIModule", "Niagara", "EnhancedInput", "UMG", "Paper2D" });
 
 		PrivateIncludePaths.AddRange(new string[] { "SimpleGame" });
-    }
+
+		bUseRTTI = true;
+
+	}
 }

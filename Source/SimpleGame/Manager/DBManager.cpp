@@ -62,6 +62,7 @@ const UDataTable* UDBManager::FindDataTable(const FString& TableName)
 {
 	for (const UDataTable* dataTable : DataTables)
 	{
+		dataTable->IsA<UDataTable>();
 		if (TableName.Compare(dataTable->GetName()))
 		{
 			return dataTable;

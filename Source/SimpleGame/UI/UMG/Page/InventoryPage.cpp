@@ -2,8 +2,20 @@
 
 
 #include "InventoryPage.h"
+#include "Components/Button.h"
+#include "Manager/NetworkManager.h"
+#include "UI/UMG/Item/InventoryItem.h"
 
-bool UInventoryPage::Initialize()
+void UInventoryPage::NativeConstruct()
 {
-	return Super::Initialize();
+	Super::NativeConstruct();
+
+	if (TestButton) {
+		//TestButton->OnClicked.AddUniqueDynamic(this, &ThisClass::TestNetwork);
+	}
+}
+
+void UInventoryPage::TestNetwork()
+{
+	UNetworkManager::Instance()->SendHello();
 }

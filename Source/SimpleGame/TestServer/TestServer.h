@@ -4,165 +4,101 @@
 
 #include "CoreMinimal.h"
 #include "HAL/ThreadSafeCounter.h"
+#include "Tickable.h"
+#include "TestServerDefine.h"
+#include "Containers/Queue.h"
 #include "TestServer.generated.h"
 
 /**
  * Is not a general structure
  * like TestClinet, Database is ClientOnly
  */
-class ISerializable
-{
-	virtual unsigned short Serialize(char* buffer, int32 offset) = 0;
-};
 
-class IDeserializable
-{
-	virtual unsigned short Deserialize(char* buffer, int32 offset) = 0;
-};
-
-class IPacketStructInit
-{
-	virtual void Init() = 0;
-};
-
-class RefObject
+class SimplePacket
 {
 public:
-	RefObject()
-	{
-		counter.Reset();
-		counter.Increment();
-	}
-	virtual ~RefObject()
-	{
-	}
-	void AddRef()
-	{
-		counter.Increment();
-	}
-	void RemoveRef()
-	{
-		counter.Decrement();
-		if (0 >= counter.GetValue())
-		{
-			Destroy();
-			delete this;
-		}
-	}
-	int32 GetValue()
-	{
-		return counter.GetValue();
-	}
-protected:
-	virtual void Destroy()
-	{
-	}
-private:
-	FThreadSafeCounter counter;
+	SimplePacket() {};
+	virtual ~SimplePacket() {};
+
+	ProtocolId protocolId = ProtocolId::None;
 };
 
-class IPacketStruct : public IPacketStructInit, public ISerializable, public IDeserializable, public RefObject
+class NetItemData
 {
 public:
-	virtual uint16 Serialize(char* buffer, int32 offset) override
-	{
-		return 0;
-	}
-	virtual uint16 Deserialize(char* buffer, int32 offset) override
-	{
-		return 0;
-	}
-	virtual void Init() override
-	{
-	}
-protected:
-	virtual void Destroy() override
-	{
-	}
+	int64 ID			= 0;
+	int64 ExpireDate	= 0;
+	int32 Index			= 0;
+	int32 Quantity		= 0;
+	uint8 Level			= 0;
+	uint8 EquipState	= 0;
 };
 
-class NetItemData : public IPacketStruct
+class NetAttributeData
 {
 public:
-	int64 InventorySequence		= 0;
-	int64 ExpireDate			= 0;
-	int32 Index					= 0;
-	int32 Quantity				= 0;
-	uint8 Level					= 0;
-	uint8 EquipState			= 0;
-
-	void Init()
-	{
-	}
-
-	virtual void Destroy() override
-	{
-	}
-
-	virtual uint16 Serialize(char* buffer, int32 offset) override
-	{
-		// simple example code
-		uint16 size = 0;
-		//size += PacketUtil::Write(buffer, offset + size, InventorySequence);
-		//...
-		return size;
-	}
-
-	virtual uint16 Deserialize(char* buffer, int32 offset) override
-	{
-		// simple example code
-		uint16 size = 0;
-		//size += PacketUtil::Read(buffer, offset + size, InventorySequence);
-		//...
-		return size;
-	}
+	int64 ParentsID			= 0;
+	int64 AttributeID		= 0;
+	uint8 AttributeType		= 0;
+	uint8 AttributeValue	= 0;
 };
 
-class NetAttributeData : public IPacketStruct
+class QrySimpleHello : public SimplePacket
 {
 public:
-	int64 ParentsSequence = 0;
-	int64 AttributeSequence = 0;
-	uint8 AttributeType = 0;
-	uint8 AttributeValue = 0;
+	int32 accountID;
+};
 
-	void Init()
-	{
-	}
+class RplSimpleHello : public SimplePacket
+{
+public:
+	NetResultCode resultCode = NetResultCode::NoError;
+	int64 accountTocken;
+};
 
-	virtual void Destroy() override
-	{
-	}
+class QrySimpleGetInventory : public SimplePacket
+{
+};
 
-	virtual uint16 Serialize(char* buffer, int32 offset) override
-	{
-		// simple example code
-		uint16 size = 0;
-		//size += PacketUtil::Write(buffer, offset + size, ParentsSequence);
-		//...
-		return size;
-	}
-
-	virtual uint16 Deserialize(char* buffer, int32 offset) override
-	{
-		// simple example code
-		uint16 size = 0;
-		//size += PacketUtil::Read(buffer, offset + size, ParentsSequence);
-		//...
-		return size;
-	}
+class RplSimpleGetInventory : public SimplePacket
+{
+public:
+	NetResultCode resultCode = NetResultCode::NoError;
+	TArray<NetItemData> NetItemDatas;
+	TArray<NetAttributeData> NetAttDatas;
 };
 
 static constexpr int32 kItemDefaultPoolSize = 100;
 static constexpr int32 kAttributeDefaultPoolSize = 200;
 
 UCLASS()
-class SIMPLEGAME_API UTestServer : public UObject
+class SIMPLEGAME_API UTestServer : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()
 
+public:
+
 	void ServerOpen();
 	void ServerClose();
+
+	void AddBuffer(const SimplePacket* packet);
+
+	// FTickableGameObject interface
+	virtual void Tick(float DeltaTime) override;
+	virtual TStatId GetStatId() const override;
+
+	bool bAllowedToTick = false;
+	virtual bool IsAllowedToTick() const override { return bAllowedToTick; }
+	// End of FTickableGameObject interface
+
+private:
+	void Dispatch(const SimplePacket* qryPacket);
+
+	// Game User Fuctions
+	bool FillUserInventory(TArray<NetItemData>& refItemDatas, TArray<NetAttributeData>& refAttDatas);
+
+private:
+	TQueue<const SimplePacket*> packets;
 
 	// not have structure by user
 	TArray<NetItemData> ItemDatas;

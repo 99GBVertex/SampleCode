@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "InventoryPage.generated.h"
 
+class UInventoryItem;
+class UButton;
 /**
  * 
  */
@@ -15,18 +17,23 @@ class SIMPLEGAME_API UInventoryPage : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		class UInventoryItem* EquippedWeapon;
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		class UInventoryItem* EquippedHelmet;
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		class UInventoryItem* EquippedArmor;
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		class UInventoryItem* EquippedGloves;
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		class UInventoryItem* EquippedBoots;
+	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+		void TestNetwork();
 
 public:
-	virtual bool Initialize() override;
-	
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
+		UInventoryItem* EquippedWeapon;
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
+		UInventoryItem* EquippedHelmet;
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
+		UInventoryItem* EquippedArmor;
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
+		UInventoryItem* EquippedGloves;
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
+		UInventoryItem* EquippedBoots;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
+		UButton* TestButton;	
 };
