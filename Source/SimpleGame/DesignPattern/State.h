@@ -13,7 +13,14 @@ UCLASS(Abstract)
 class SIMPLEGAME_API UState : public UInterface
 {
 	GENERATED_BODY()
-	
+
+public:
+
+	/**
+	 * Bind Functions
+	 */
+	virtual void RegisterDelegates() {};
+
 	/**
 	* Start State
 	*/
@@ -22,12 +29,7 @@ class SIMPLEGAME_API UState : public UInterface
 	/**
 	* End State
 	*/
-	virtual void EndState() {};
-
-	/**
-	 * Bind Functions
-	 */
-	virtual void RegisterDelegates() {};
+	virtual void EndState() {};	
 
 	/**
 	 * * UnBind Functions
