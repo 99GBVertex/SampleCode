@@ -33,10 +33,6 @@ public:
 private:
 	void ChangeState(class UClass* LobbyStateClass);
 
-public:
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<UUserWidget> rootUI;
-
 private:
 	TObjectPtr<UFSM> GameFSM;
 	EGameState LobbyCurState;

@@ -6,7 +6,7 @@
 
 void UNetworkManager::Init()
 {
-	net_handlers.clear();
+	net_handlers.Empty();
 	SetNetworkEvent();
 
 	if (!testServer) {
@@ -21,7 +21,7 @@ void UNetworkManager::Release()
 		testServer->ServerClose();
 		testServer = nullptr;
 	}
-	net_handlers.clear();
+	net_handlers.Empty();
 }
 
 void UNetworkManager::Bind(ProtocolId packetType, void(*handler)(const SimplePacket*))
@@ -35,7 +35,7 @@ bool UNetworkManager::Dispatch(ProtocolId packetType, const SimplePacket* packet
 		UE_LOG(LogTemp, Log, TEXT("Invalid Packet: protocol [%d]"), (uint16)packetType);
 		return false;
 	}
-	if (net_handlers.find(packetType) == net_handlers.end())
+	if (!net_handlers.Contains(packetType))
 	{
 		UE_LOG(LogTemp, Log, TEXT("Invalid Packet: protocol [%d]"), (uint16)packetType);
 		return false;

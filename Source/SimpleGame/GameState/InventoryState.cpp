@@ -3,15 +3,15 @@
 
 #include "GameState/InventoryState.h"
 
+void UInventoryState::RegisterDelegates()
+{
+}
+
 void UInventoryState::StartState()
 {
 }
 
 void UInventoryState::EndState()
-{
-}
-
-void UInventoryState::RegisterDelegates()
 {
 }
 

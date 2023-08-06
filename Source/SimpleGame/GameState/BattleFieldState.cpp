@@ -3,15 +3,15 @@
 
 #include "GameState/BattleFieldState.h"
 
+void UBattleFieldState::RegisterDelegates()
+{
+}
+
 void UBattleFieldState::StartState()
 {
 }
 
 void UBattleFieldState::EndState()
-{
-}
-
-void UBattleFieldState::RegisterDelegates()
 {
 }
 

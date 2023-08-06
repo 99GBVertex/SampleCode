@@ -5,8 +5,10 @@
 #include "Define.generated.h"
 
 static constexpr auto UI_ROOT_LAYER_PATH = "/Game/UI/UMG/Common/W_Master";
-static constexpr auto UI_PAGE_RESOURCE_PATH = "UIPage/";
-static constexpr auto UI_POPUP_RESOURCE_PATH = "UIPopup/";
+static constexpr auto UI_PAGE_RESOURCE_PATH = "/Game/UI/UMG/UIPage/";
+static constexpr auto UI_POPUP_RESOURCE_PATH = "/Game/UI/UMG/UIPopup/";
+static constexpr auto UI_SYSTEM_POPUP_RESOURCE_PATH = "/Game/UI/UMG/UISystemPopup/";
+static constexpr auto TARGET_CANVAS_NAME = TEXT("UICanvas");
 
 static constexpr int32 kDefaultWeaponInventorySize = 20;
 static constexpr int32 kDefaultArmorInventorySize = 50;

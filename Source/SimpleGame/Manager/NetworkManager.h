@@ -5,8 +5,6 @@
 #include "CoreMinimal.h"
 #include "TestServer/TestServer.h"
 #include "DesignPattern/Singleton.h"
-#include <map>
-#include <functional>
 #include "NetworkManager.generated.h"
 
 class UTestServer;
@@ -23,19 +21,19 @@ class SIMPLEGAME_API UNetworkManager : public UObject, public FSingleton<UNetwor
 
 public:
 
-	void SendHello();
-	void SendGetInventory();
-
 	void Init();
 	void Release();
+
 	void Bind(ProtocolId packetType, void(*handler)(const SimplePacket*));
 	bool Dispatch(ProtocolId packetType, const SimplePacket* packet);
 	bool NetWorkResultCodeCheck(ProtocolId InProtocolID, uint16 InResultCode);
 
+	void SendHello();
+	void SendGetInventory();
 private:
 	void SetNetworkEvent();
 
 private:
 	UTestServer* testServer;
-	std::map<ProtocolId, std::function<void(const SimplePacket*)>> net_handlers;
+	TMap<ProtocolId, TFunction<void(const SimplePacket*)>> net_handlers;
 };

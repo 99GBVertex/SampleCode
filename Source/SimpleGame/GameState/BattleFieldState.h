@@ -13,9 +13,9 @@ public:
 	GENERATED_BODY()
 
 	//~ Begin UState
+	virtual void RegisterDelegates() override;
 	virtual void StartState() override;
 	virtual void EndState() override;
-	virtual void RegisterDelegates() override;
 	virtual void UnregisterDelegates() override;
 	//~ End UState
 };
