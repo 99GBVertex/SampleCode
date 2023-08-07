@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/UMG/SimpleUserWidget.h"
 #include "InventoryPage.generated.h"
 
 class UInventoryItem;
@@ -12,7 +12,7 @@ class UButton;
  * 
  */
 UCLASS()
-class SIMPLEGAME_API UInventoryPage : public UUserWidget
+class SIMPLEGAME_API UInventoryPage : public USimpleUserWidget
 {
 	GENERATED_BODY()
 
@@ -24,16 +24,16 @@ public:
 
 public:
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		UInventoryItem* EquippedWeapon;
+		TObjectPtr<UInventoryItem> EquippedWeapon;
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		UInventoryItem* EquippedHelmet;
+		TObjectPtr<UInventoryItem> EquippedHelmet;
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		UInventoryItem* EquippedArmor;
+		TObjectPtr<UInventoryItem> EquippedArmor;
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		UInventoryItem* EquippedGloves;
+		TObjectPtr<UInventoryItem> EquippedGloves;
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		UInventoryItem* EquippedBoots;
+		TObjectPtr<UInventoryItem> EquippedBoots;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		UButton* TestButton;	
+		TObjectPtr<UButton> TestButton;
 };

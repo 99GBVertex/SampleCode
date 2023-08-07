@@ -5,9 +5,9 @@
 #include "Components/Overlay.h"
 #include "Manager/UIManager.h"
 
-TObjectPtr<UWidget> UMasterWidget::GetTypeRoot(EUIType InUIType)
+TObjectPtr<UPanelWidget> UMasterWidget::GetTypeRoot(EUIType InUIType)
 {
-	TObjectPtr<UWidget> OutTypeLayer = nullptr;
+	TObjectPtr<UPanelWidget> OutTypeLayer = nullptr;
 	switch (InUIType)
 	{
 	case EUIType::PAGE:			OutTypeLayer = Page;		break;

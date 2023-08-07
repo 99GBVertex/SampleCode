@@ -5,9 +5,9 @@
 #include "Define.generated.h"
 
 static constexpr auto UI_ROOT_LAYER_PATH = "/Game/UI/UMG/Common/W_Master";
-static constexpr auto UI_PAGE_RESOURCE_PATH = "/Game/UI/UMG/UIPage/";
-static constexpr auto UI_POPUP_RESOURCE_PATH = "/Game/UI/UMG/UIPopup/";
-static constexpr auto UI_SYSTEM_POPUP_RESOURCE_PATH = "/Game/UI/UMG/UISystemPopup/";
+static constexpr auto UI_PAGE_RESOURCE_PATH = "/Game/UI/UMG/Page/";
+static constexpr auto UI_POPUP_RESOURCE_PATH = "/Game/UI/UMG/Popup/";
+static constexpr auto UI_SYSTEM_POPUP_RESOURCE_PATH = "/Game/UI/UMG/SystemPopup/";
 static constexpr auto TARGET_CANVAS_NAME = TEXT("UICanvas");
 
 static constexpr int32 kDefaultWeaponInventorySize = 20;
@@ -17,6 +17,7 @@ static constexpr int32 kDefaultArmorInventorySize = 50;
 
 #define GET_ENUM_STRING(etype, evalue) ( (FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true) != nullptr) ? FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true)->GetNameStringByIndex((int32)evalue) : FString("Invalid - are you sure enum uses UENUM() macro?") )
 #define GET_ENUM_COUNT(etype) ( (FindObject<UEnum>(ANY_PACKAGE, TEXT(#etype), true) != nullptr ) ? FindObject<UEnum>(ANY_PACKAGE, TEXT(#etype), true)->NumEnums() - 1 : -1 )
+#define CONCAT(X,Y) X##Y
 
 UENUM(BlueprintType)
 enum class EProductSection : uint8

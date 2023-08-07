@@ -4,6 +4,7 @@
 #include "Manager/DBManager.h"
 #include "Manager/ItemManager.h"
 #include "Manager/NetworkManager.h"
+#include "Manager/UIManager.h"
 
 USimpleGameInstnace::USimpleGameInstnace()
 {
@@ -12,6 +13,7 @@ USimpleGameInstnace::USimpleGameInstnace()
 		UDBManager::Instance();
 		UItemManager::Instance();
 		UNetworkManager::Instance();
+		UUIManager::Instance();
 	}
 }
 
@@ -26,6 +28,7 @@ void USimpleGameInstnace::Init()
 	UDBManager::Instance()->Init();
 	UItemManager::Instance()->Init();
 	UNetworkManager::Instance()->Init();
+	UUIManager::Instance()->Init();
 }
 
 void USimpleGameInstnace::Shutdown()
@@ -33,6 +36,7 @@ void USimpleGameInstnace::Shutdown()
 	UDBManager::Instance()->Release();
 	UItemManager::Instance()->Release();
 	UNetworkManager::Instance()->Release();
+	UUIManager::Instance()->Release();
 
 	Super::Shutdown();
 }

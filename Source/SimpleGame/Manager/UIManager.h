@@ -13,6 +13,13 @@ class USimpleUserWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUIEvent, UUserWidget*, widget);
 
 UENUM()
+enum class EUIObjectType : uint8
+{
+	NONE,
+	PAGE_INVENTORY,
+};
+
+UENUM()
 enum class EUIType : uint8
 {
 	NONE,
@@ -31,25 +38,33 @@ class SIMPLEGAME_API UUIManager : public UObject, public FSingleton<UUIManager>
 
 	UUIManager();
 public:
-
 	void Init();
 	void Release();
 
-	EUIType GetUIType(const FString& name);
+	void InitMaster();
+	TObjectPtr<USimpleUserWidget> CreateUI(EUIObjectType InUIObjType);
 
+protected:
 	template<typename T>
-	TObjectPtr<T> LoadWidget(const TObjectPtr<class UWidget> RootUI, const FString& LoadPath) {
+	TObjectPtr<T> LoadWidget(const TObjectPtr<class UPanelWidget> RootUI, const FString& LoadPath) {
 		TObjectPtr<T> UIWidget = nullptr;
 		TSubclassOf<T> WidgetClass = LoadClass<T>(nullptr, *LoadPath);
 		if (WidgetClass != nullptr)
 		{
-			UIWidget = CreateWidget<T>(RootUI, WidgetClass);
+			UIWidget = CreateWidget<USimpleUserWidget>(RootUI, WidgetClass);
+			UOverlaySlot* layerSlot = dynamic_cast<UOverlaySlot*>(RootUI->AddChild(UIWidget));
+			if (layerSlot) {
+				layerSlot->SetHorizontalAlignment(HAlign_Fill);
+				layerSlot->SetVerticalAlignment(VAlign_Fill);
+				layerSlot->SynchronizeProperties();
+			}
 		}
 		return UIWidget;
 	}
 
-	TObjectPtr<USimpleUserWidget> CreateUI(const FString& name);
-
+	static constexpr EUIType GetUIType(EUIObjectType InUIObjType);
+	static constexpr const char* GetUIPath(EUIType InUIType);
+	static constexpr const char* GetUIName(EUIObjectType InUIObjType);
 protected:
 	UPROPERTY() TSubclassOf<UUserWidget> MasterWidgetClass;
 	UPROPERTY() TObjectPtr<UMasterWidget> MaterWidget;

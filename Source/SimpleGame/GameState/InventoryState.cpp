@@ -2,6 +2,7 @@
 
 
 #include "GameState/InventoryState.h"
+#include "Manager/UIManager.h"
 
 void UInventoryState::RegisterDelegates()
 {
@@ -9,6 +10,7 @@ void UInventoryState::RegisterDelegates()
 
 void UInventoryState::StartState()
 {
+	UUIManager::Instance()->CreateUI(EUIObjectType::PAGE_INVENTORY);
 }
 
 void UInventoryState::EndState()

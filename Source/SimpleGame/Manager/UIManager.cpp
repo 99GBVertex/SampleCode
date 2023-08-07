@@ -3,73 +3,60 @@
 
 #include "Manager/UIManager.h"
 #include "Define.h"
+#include "SimpleGameInstnace.h"
+#include "Misc/SimpleEngineUtil.h"
 #include "UI/UMG/SimpleUserWidget.h"
 #include "UObject/ConstructorHelpers.h"
 #include "UI/UMG/MasterWidget.h"
+#include "Components/PanelWidget.h"
+#include "Components/OverlaySlot.h"
 
 UUIManager::UUIManager()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClassFinder(TEXT("/Game/UI/UMG/Common/W_Master"));
-	if (WidgetClassFinder.Class != NULL) {
-		MasterWidgetClass = WidgetClassFinder.Class;
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+		static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClassFinder(TEXT("/Game/UI/UMG/Common/W_Master"));
+		if (WidgetClassFinder.Class != NULL) {
+			MasterWidgetClass = WidgetClassFinder.Class;
+		}
 	}
 }
 
 void UUIManager::Init()
 {
-	MaterWidget = CreateWidget<UMasterWidget>(GetWorld(), MasterWidgetClass);
-	if (MaterWidget) {
-		MaterWidget->AddToViewport();
-	}
 }
 
 void UUIManager::Release()
 {
-	MasterWidgetClass = nullptr;
 	MaterWidget = nullptr;
-	CurrentWidget->UIDestructor();
+	if (IsValid(CurrentWidget)) {
+		CurrentWidget->UIDestructor();
+	}
 	CurrentWidget = nullptr;
 	for (TObjectPtr<USimpleUserWidget>& widget : DestroyPool) {
-		widget->UIDestructor();
+		if (IsValid(widget)) {
+			widget->UIDestructor();
+		}
 		widget = nullptr;
 	}
 	DestroyPool.Empty();
 }
 
-EUIType UUIManager::GetUIType(const FString& name)
+void UUIManager::InitMaster()
 {
-	if (name.Contains("page"))
-	{
-		return EUIType::PAGE;
+	TObjectPtr<USimpleGameInstnace> gInstance = SimpleEngineUtil::GetGameInstance<USimpleGameInstnace>();
+	MaterWidget = CreateWidget<UMasterWidget>(gInstance, MasterWidgetClass);
+	if (MaterWidget) {
+		MaterWidget->AddToViewport();
 	}
-	else if (name.Contains("system_popup"))
-	{
-		return EUIType::SYSTEM_POPUP;
-	}
-	else if (name.Contains("popup"))
-	{
-		return EUIType::POPUP;
-	}
-	return EUIType::NONE;
 }
 
-TObjectPtr<USimpleUserWidget> UUIManager::CreateUI(const FString& name)
+TObjectPtr<USimpleUserWidget> UUIManager::CreateUI(EUIObjectType InUIObjType)
 {
 	if (!MaterWidget) {
-		return nullptr;
+		InitMaster();
 	}
-
-	FString StrResourcePath = "";
-	EUIType UIType = GetUIType(name);
-	switch (UIType)
-	{
-	case EUIType::PAGE:		   	StrResourcePath = UI_PAGE_RESOURCE_PATH;			break;
-	case EUIType::POPUP:	   	StrResourcePath = UI_POPUP_RESOURCE_PATH;			break;
-	case EUIType::SYSTEM_POPUP:	StrResourcePath = UI_SYSTEM_POPUP_RESOURCE_PATH;	break;
-	case EUIType::NONE:
-	default:
-		break;
-	}
+	check(MaterWidget);
 
 	if (IsValid(CurrentWidget)) {
 		if (CurrentWidget->IsDestroyImmediately()) {
@@ -81,11 +68,57 @@ TObjectPtr<USimpleUserWidget> UUIManager::CreateUI(const FString& name)
 			CurrentWidget = nullptr;
 		}
 	}
-	const TObjectPtr<UWidget> rootLayer = MaterWidget->GetTypeRoot(UIType);
-	CurrentWidget = LoadWidget<USimpleUserWidget>(rootLayer, StrResourcePath);
+	EUIType uiType = UUIManager::GetUIType(InUIObjType);
+	const TObjectPtr<UPanelWidget> rootLayer = MaterWidget->GetTypeRoot(uiType);
+		
+	FString StrResourceName = UUIManager::GetUIName(InUIObjType);
+	FString StrResourcePath = FString::Format(TEXT("{0}{1}.{2}_C"), { UUIManager::GetUIPath(uiType), StrResourceName, StrResourceName });
+ 	CurrentWidget = LoadWidget<USimpleUserWidget>(rootLayer, StrResourcePath);
 	if (CurrentWidget) {
 		CurrentWidget->UIConstuctor();
 	}
-
 	return CurrentWidget;
+}
+
+constexpr EUIType UUIManager::GetUIType(EUIObjectType InUIObjType)
+{
+	EUIType OutUIType = EUIType::NONE;
+	switch (InUIObjType)
+	{
+	case EUIObjectType::PAGE_INVENTORY:
+		OutUIType = EUIType::PAGE;
+		break;
+	case EUIObjectType::NONE:
+	default:
+		break;
+	}
+
+	return OutUIType;
+}
+
+constexpr const char* UUIManager::GetUIPath(EUIType InUIType)
+{
+	switch (InUIType)
+	{
+	case EUIType::PAGE:		   	return UI_PAGE_RESOURCE_PATH;		
+	case EUIType::POPUP:	   	return UI_POPUP_RESOURCE_PATH;		
+	case EUIType::SYSTEM_POPUP:	return UI_SYSTEM_POPUP_RESOURCE_PATH;
+	case EUIType::NONE:
+	default:
+		break;
+	}
+	return "";
+}
+
+constexpr const char* UUIManager::GetUIName(EUIObjectType InUIObjType)
+{
+	EUIType UIType = GetUIType(InUIObjType);
+	switch (InUIObjType)
+	{
+	case EUIObjectType::PAGE_INVENTORY:	return "W_InventoryPage";
+	case EUIObjectType::NONE:
+	default:
+		break;
+	}
+	return "";
 }

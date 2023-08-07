@@ -26,7 +26,9 @@ void UNetworkManager::Release()
 
 void UNetworkManager::Bind(ProtocolId packetType, void(*handler)(const SimplePacket*))
 {
-	net_handlers[packetType] = handler;
+	if (net_handlers.Num() > 0 && !net_handlers.Contains(packetType)) {
+		net_handlers.Emplace(packetType , handler);
+	}
 }
 
 bool UNetworkManager::Dispatch(ProtocolId packetType, const SimplePacket* packet)

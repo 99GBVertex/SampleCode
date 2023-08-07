@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "SimpleGameGameMode.h"
+#include "Misc/SimpleEngineUtil.h"
 
 #include "GameState/BattleFieldState.h"
 #include "GameState/InventoryState.h"
@@ -14,6 +15,7 @@ void ASimpleGameGameMode::StartPlay()
 {
 	Super::StartPlay();
 
+	SimpleEngineUtil::ModeWorld = GetWorld();
 	GameFSM = NewObject<UFSM>(this, TEXT("SimpleGameFSM"));
 	if (!IsValid(GameFSM)) {
 		Logout(nullptr);

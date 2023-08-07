@@ -25,5 +25,5 @@ public:
 		TObjectPtr<UOverlay> SystemPopup;
 
 public:
-	TObjectPtr<UWidget> GetTypeRoot(EUIType InUIType);
+	TObjectPtr<UPanelWidget> GetTypeRoot(EUIType InUIType);
 };
