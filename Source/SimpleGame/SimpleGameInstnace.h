@@ -22,5 +22,4 @@ public:
 	virtual void Shutdown() override;
 	virtual void StartGameInstance() override;
 	//~ End UGameInstance
-	
 };

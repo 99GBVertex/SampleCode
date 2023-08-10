@@ -66,8 +66,7 @@ struct SIMPLEGAME_API FItemBase
 
 public:
 	FItemBase() = default;
-	FItemBase(const FItemBase&) = delete;
-	FItemBase& operator=(const FItemBase&) = default;
+	FItemBase(const FItemBase & aa) = delete;
 
 public:
 	UPROPERTY() int64 id = 0;
@@ -80,6 +79,7 @@ private:
 	FString descriptTableKey = "";
 
 public:
+	void BindNetData(const NetItemData& InNetData);
 	void SetTableKey();
 	bool IsExpired() const;
 	bool IsValid() const;
@@ -91,13 +91,14 @@ public:
 USTRUCT()
 struct SIMPLEGAME_API FWeapon : public FItemBase
 {
-	GENERATED_BODY()	
+	GENERATED_BODY()
 };
 
 USTRUCT()
 struct SIMPLEGAME_API FArmor : public FItemBase
 {
 	GENERATED_BODY()
+	
 };
 
 USTRUCT()
@@ -130,10 +131,13 @@ public:
 
 	// table data
 	void MakeItemDataTable();
-	FItemTable* GetItemData(int32 inIndex);
+	const FItemTable* GetItemData(int32 inIndex);
 
 	// bind network
-	void BindInventoryData(TArray<NetItemData*>& netItems, TArray<NetAttributeData*>& netAtts);
+
+	bool CreateWeapon(int32 inIndex, TSharedPtr<FWeapon>& outWeapon);
+	bool CreateArmor(int32 inIndex, TSharedPtr<FArmor>& outArmor);
+	void BindInventoryData(const TArray<NetItemData>& netItems, const TArray<NetAttributeData>& netAtts);
 
 private:
 	// table data

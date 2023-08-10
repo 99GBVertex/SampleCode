@@ -13,6 +13,5 @@ public class SimpleGame : ModuleRules
 		PrivateIncludePaths.AddRange(new string[] { "SimpleGame" });
 
 		bUseRTTI = true;
-
 	}
 }

@@ -26,7 +26,7 @@ void UNetworkManager::Release()
 
 void UNetworkManager::Bind(ProtocolId packetType, void(*handler)(const SimplePacket*))
 {
-	if (net_handlers.Num() > 0 && !net_handlers.Contains(packetType)) {
+	if (net_handlers.Num() == 0 || !net_handlers.Contains(packetType)) {
 		net_handlers.Emplace(packetType , handler);
 	}
 }
@@ -79,12 +79,12 @@ void UNetworkManager::SendGetInventory()
 
 void OnRplSimpleHello(const SimplePacket* packet)
 {
-	const RplSimpleHello* rplHello = dynamic_cast<const RplSimpleHello*>(packet);
-	if (rplHello) {
+	const RplSimpleHello* rplPacket = dynamic_cast<const RplSimpleHello*>(packet);
+	if (rplPacket) {
 		int32 headerSize = 0;
-		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplHello->protocolId, rplHello->resultCode))
+		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplPacket->protocolId, rplPacket->resultCode))
 		{
-			
+			UNetworkManager::Instance()->SendGetInventory();
 		}
 	}
 }
@@ -92,12 +92,12 @@ void OnRplSimpleHello(const SimplePacket* packet)
 
 void OnRplSimpleGetInventory(const SimplePacket* packet)
 {
-	const RplSimpleGetInventory* rplHello = dynamic_cast<const RplSimpleGetInventory*>(packet);
-	if (rplHello) {
+	const RplSimpleGetInventory* rplPacket = dynamic_cast<const RplSimpleGetInventory*>(packet);
+	if (rplPacket) {
 		int32 headerSize = 0;
-		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplHello->protocolId, rplHello->resultCode))
+		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplPacket->protocolId, rplPacket->resultCode))
 		{
-
+			UItemManager::Instance()->BindInventoryData(rplPacket->NetItemDatas, rplPacket->NetAttDatas);
 		}
 	}
 }
