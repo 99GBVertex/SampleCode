@@ -12,6 +12,9 @@ public class SimpleGame : ModuleRules
 
 		PrivateIncludePaths.AddRange(new string[] { "SimpleGame" });
 
-		bUseRTTI = true;
-	}
+        if (Target.Platform == UnrealTargetPlatform.Win64)
+        {
+            bUseRTTI = true;
+        }
+    }
 }
