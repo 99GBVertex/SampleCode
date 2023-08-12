@@ -10,7 +10,32 @@ void UInventoryState::RegisterDelegates()
 
 void UInventoryState::StartState()
 {
-	UUIManager::Instance()->CreateUI(EUIObjectType::PAGE_INVENTORY);
+}
+
+void UInventoryState::BindEventCalls()
+{
+	if(EVENT_MANAGER()) EVENT_MANAGER()->AddReceiver(this, { EEventType::msg_rpl_Inventory });
+}
+
+void UInventoryState::OnBoundEventBroadCast(EEventType eventType, EventMsgPtr message)
+{
+	switch (eventType)
+	{
+	case EEventType::msg_rpl_Inventory:
+	{
+		//Create UI
+		UUIManager::Instance()->CreateUI(EUIObjectType::PAGE_INVENTORY);
+	}
+	break;
+
+	default:
+		break;
+	}
+}
+
+void UInventoryState::UnBindEventCalls()
+{
+	if (EVENT_MANAGER()) EVENT_MANAGER()->AddReceiver(this, { EEventType::msg_rpl_Inventory });
 }
 
 void UInventoryState::EndState()

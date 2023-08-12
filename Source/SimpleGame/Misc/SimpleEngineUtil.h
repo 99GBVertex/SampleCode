@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/GameplayStatics.h"
 
+#define EVENT_MANAGER SimpleEngineUtil::GetPublicEventManager
 /**
  *
  */
@@ -112,6 +113,8 @@ public:
 
 	/** 모드 GetWorld. 아래의 GetModeWorld() 를 쓰자 */
 	static UWorld* ModeWorld;
+
+	static class UEventManager* GetPublicEventManager();
 };
 
 /**

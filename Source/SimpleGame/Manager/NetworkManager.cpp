@@ -3,6 +3,9 @@
 
 #include "NetworkManager.h"
 #include "Manager/ItemManager.h"
+#include "Manager/GameEvent/EventType.h"
+#include "Manager/GameEvent/EventManager.h"
+#include "Misc/SimpleEngineUtil.h"
 
 void UNetworkManager::Init()
 {
@@ -98,6 +101,7 @@ void OnRplSimpleGetInventory(const SimplePacket* packet)
 		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplPacket->protocolId, rplPacket->resultCode))
 		{
 			UItemManager::Instance()->BindInventoryData(rplPacket->NetItemDatas, rplPacket->NetAttDatas);
+			EVENT_MANAGER()->CallEvent(EEventType::msg_rpl_Inventory);
 		}
 	}
 }

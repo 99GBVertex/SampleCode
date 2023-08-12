@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "Manager/GameEvent/EventManager.h"
+#include "Manager/GameEvent/EventType.h"
+#include "Misc/SimpleEngineUtil.h"
 #include "State.generated.h"
 
 /**
@@ -25,6 +28,21 @@ public:
 	* Start State
 	*/
 	virtual void StartState() {};
+
+	/**
+	* Bind Event Calls
+	*/
+	virtual void BindEventCalls() {};
+
+	/**
+	* BroadCast Event
+	*/
+	virtual void OnBoundEventBroadCast(EEventType eventType, EventMsgPtr message) {};
+
+	/**
+	* UnBind Event Calls
+	*/
+	virtual void UnBindEventCalls() {};
 
 	/**
 	* End State

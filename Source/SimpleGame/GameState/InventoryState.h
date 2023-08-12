@@ -18,7 +18,13 @@ public:
 	//~ Begin UState
 	virtual void RegisterDelegates() override;
 	virtual void StartState() override;
+
+	virtual void BindEventCalls() override;
+	virtual void OnBoundEventBroadCast(EEventType eventType, EventMsgPtr message) override;
+	virtual void UnBindEventCalls() override;
+
 	virtual void EndState() override;
 	virtual void UnregisterDelegates() override;
 	//~ End UState
-};
+}; 
+

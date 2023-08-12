@@ -26,10 +26,9 @@ void ASimpleGameGameMode::StartPlay()
 	FSM_ADDSTATE(GameFSM, UInventoryState);
 	FSM_ADDSTATE(GameFSM, UBattleFieldState);
 
+	ChangeStateEnum(EGameState::INVENTORY);
 	//Net 
 	UNetworkManager::Instance()->SendHello();
-
-	//ChangeStateEnum(EGameState::INVENTORY);
 }
 
 void ASimpleGameGameMode::Logout(AController* Exiting)

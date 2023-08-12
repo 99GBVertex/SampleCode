@@ -80,6 +80,7 @@ void UFSM::SetState(const UClass* Class)
 				UState* CurrentInterfaceState = Cast<UState>(CurrentState);
 				CurrentInterfaceState->UnregisterDelegates();
 				CurrentInterfaceState->EndState();
+				CurrentInterfaceState->UnBindEventCalls();
 			}
 
 			PreState = CurrentState;
@@ -99,6 +100,7 @@ void UFSM::SetState(const UClass* Class)
 			UState* CurrentInterfaceState = Cast<UState>(CurrentState);
 			CurrentInterfaceState->RegisterDelegates();
 			CurrentInterfaceState->StartState();
+			CurrentInterfaceState->BindEventCalls();
 
 			bStateSetting = false;
 

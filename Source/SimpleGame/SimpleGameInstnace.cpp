@@ -5,6 +5,8 @@
 #include "Manager/ItemManager.h"
 #include "Manager/NetworkManager.h"
 #include "Manager/UIManager.h"
+#include "Manager/GameEvent/EventManager.h"
+
 
 USimpleGameInstnace::USimpleGameInstnace()
 {
@@ -29,6 +31,11 @@ void USimpleGameInstnace::Init()
 	UItemManager::Instance()->Init();
 	UNetworkManager::Instance()->Init();
 	UUIManager::Instance()->Init();
+
+	if (!IsValid(eventMgr)) {
+		eventMgr = NewObject<UEventManager>();
+	}
+	eventMgr->Init();
 }
 
 void USimpleGameInstnace::Shutdown()
@@ -37,6 +44,11 @@ void USimpleGameInstnace::Shutdown()
 	UItemManager::Instance()->Release();
 	UNetworkManager::Instance()->Release();
 	UUIManager::Instance()->Release();
+
+	if (IsValid(eventMgr)) {
+		eventMgr->Release();
+		eventMgr = nullptr;
+	}
 
 	Super::Shutdown();
 }
