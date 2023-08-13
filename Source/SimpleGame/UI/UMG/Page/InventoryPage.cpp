@@ -2,20 +2,30 @@
 
 
 #include "InventoryPage.h"
-#include "Components/Button.h"
+
 #include "Manager/NetworkManager.h"
-#include "UI/UMG/Item/InventoryItem.h"
+
+#include "UI/UMG/Item/Equipment.h"
+#include "UI/UMG/Item/InventoryList.h"
 
 void UInventoryPage::NativeConstruct()
 {
 	Super::NativeConstruct();
+}
 
-	if (TestButton) {
-		//TestButton->OnClicked.AddUniqueDynamic(this, &ThisClass::TestNetwork);
+void UInventoryPage::UIConstuctor()
+{
+	Super::UIConstuctor();
+	if (IsValid(Equipments)) {
+
+	}
+
+	if (IsValid(InventoryList)) {
+		InventoryList->SetInventoryList();
 	}
 }
 
-void UInventoryPage::TestNetwork()
+void UInventoryPage::UIDestructor()
 {
-	UNetworkManager::Instance()->SendHello();
+	Super::UIDestructor();
 }

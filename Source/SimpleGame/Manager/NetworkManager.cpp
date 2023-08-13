@@ -87,7 +87,7 @@ void OnRplSimpleHello(const SimplePacket* packet)
 		int32 headerSize = 0;
 		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplPacket->protocolId, rplPacket->resultCode))
 		{
-			UNetworkManager::Instance()->SendGetInventory();
+			EVENT_MANAGER()->CallEvent(EEventType::msg_rpl_hello);
 		}
 	}
 }

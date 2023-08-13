@@ -1,18 +1,21 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "SimpleGameGameMode.h"
+#include "SimpleGameMode.h"
 #include "Misc/SimpleEngineUtil.h"
 
 #include "Manager/NetworkManager.h"
-#include "GameState/BattleFieldState.h"
+#include "GameState/StartState.h"
 #include "GameState/InventoryState.h"
+#include "GameState/BattleFieldState.h"
 
-ASimpleGameGameMode::ASimpleGameGameMode()
+#include "DesignPattern/StateType.h"
+
+ASimpleGameMode::ASimpleGameMode()
 {
 	
 }
 
-void ASimpleGameGameMode::StartPlay() 
+void ASimpleGameMode::StartPlay() 
 {
 	Super::StartPlay();
 
@@ -23,15 +26,14 @@ void ASimpleGameGameMode::StartPlay()
 		return;
 	}
 
+	FSM_ADDSTATE(GameFSM, UStartState);
 	FSM_ADDSTATE(GameFSM, UInventoryState);
 	FSM_ADDSTATE(GameFSM, UBattleFieldState);
 
-	ChangeStateEnum(EGameState::INVENTORY);
-	//Net 
-	UNetworkManager::Instance()->SendHello();
+	ChangeStateEnum(EGameState::START);
 }
 
-void ASimpleGameGameMode::Logout(AController* Exiting)
+void ASimpleGameMode::Logout(AController* Exiting)
 {
 	Super::Logout(Exiting);
 
@@ -41,7 +43,7 @@ void ASimpleGameGameMode::Logout(AController* Exiting)
 	}
 }
 
-void ASimpleGameGameMode::ChangeStateEnum(EGameState state)
+void ASimpleGameMode::ChangeStateEnum(EGameState state)
 {
 	if (state != EGameState::NONE
 		&& state != LobbyCurState)
@@ -52,6 +54,9 @@ void ASimpleGameGameMode::ChangeStateEnum(EGameState state)
 
 	switch (LobbyCurState)
 	{
+	case EGameState::START:
+		ChangeState(UStartState::StaticClass());
+		break;
 	case EGameState::INVENTORY:
 		ChangeState(UInventoryState::StaticClass());
 		break;
@@ -66,7 +71,7 @@ void ASimpleGameGameMode::ChangeStateEnum(EGameState state)
 	}
 }
 
-void ASimpleGameGameMode::ChangeState(class UClass* LobbyStateClass)
+void ASimpleGameMode::ChangeState(class UClass* LobbyStateClass)
 {
 	GameFSM->SetState(LobbyStateClass);
 }

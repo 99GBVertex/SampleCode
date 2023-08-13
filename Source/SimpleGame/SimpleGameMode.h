@@ -7,23 +7,17 @@
 #include "GameFramework/GameModeBase.h"
 #include "Blueprint/UserWidget.h"
 #include "DesignPattern/FSM.h"
-#include "SimpleGameGameMode.generated.h"
+#include "SimpleGameMode.generated.h"
 
-UENUM()
-enum class EGameState : uint8
-{
-	NONE		= 0,
-	INVENTORY	= 1,
-	BATTLEFIELD = 2
-};
+enum class EGameState : uint8;
 
 UCLASS(minimalapi)
-class ASimpleGameGameMode : public AGameModeBase
+class ASimpleGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
 public:
-	ASimpleGameGameMode();
+	ASimpleGameMode();
 
 	virtual void StartPlay() override;
 	virtual void Logout(AController* Exiting) override;

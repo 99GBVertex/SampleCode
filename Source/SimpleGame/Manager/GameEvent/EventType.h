@@ -6,6 +6,7 @@
 UENUM()
 enum class EEventType : uint8
 {
+	msg_rpl_hello,
 	msg_rpl_Inventory,
 
 	MAX

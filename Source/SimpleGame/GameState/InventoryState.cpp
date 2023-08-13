@@ -2,6 +2,7 @@
 
 
 #include "GameState/InventoryState.h"
+#include "Manager/NetworkManager.h"
 #include "Manager/UIManager.h"
 
 void UInventoryState::RegisterDelegates()
@@ -10,6 +11,7 @@ void UInventoryState::RegisterDelegates()
 
 void UInventoryState::StartState()
 {
+	UNetworkManager::Instance()->SendGetInventory();
 }
 
 void UInventoryState::BindEventCalls()

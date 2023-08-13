@@ -6,6 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "InventoryItem.generated.h"
 
+struct FItemBase;
+struct FWeapon;
+struct FArmor;
 /**
  * 
  */
@@ -14,4 +17,10 @@ class SIMPLEGAME_API UInventoryItem : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	void SetInventoryItem(const TWeakPtr<FItemBase>& itemData);
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "Inventory Item", Meta = (BindWidget))
+		TObjectPtr<class UButton> ItemButton;
 };

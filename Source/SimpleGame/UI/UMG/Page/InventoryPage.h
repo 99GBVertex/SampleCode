@@ -6,8 +6,9 @@
 #include "UI/UMG/SimpleUserWidget.h"
 #include "InventoryPage.generated.h"
 
-class UInventoryItem;
-class UButton;
+class UEquipment;
+class UInventoryList;
+
 /**
  * 
  */
@@ -17,23 +18,18 @@ class SIMPLEGAME_API UInventoryPage : public USimpleUserWidget
 	GENERATED_BODY()
 
 public:
+	//~ Begin UUSserWidget
 	virtual void NativeConstruct() override;
+	//~ End UUSserWidget
 
-	UFUNCTION()
-		void TestNetwork();
+	//~ Begin USimpleUserWidget
+	virtual void UIConstuctor() override;
+	virtual void UIDestructor() override;
+	//~ End USimpleUserWidget
 
 public:
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		TObjectPtr<UInventoryItem> EquippedWeapon;
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		TObjectPtr<UInventoryItem> EquippedHelmet;
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		TObjectPtr<UInventoryItem> EquippedArmor;
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		TObjectPtr<UInventoryItem> EquippedGloves;
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		TObjectPtr<UInventoryItem> EquippedBoots;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidgetOptional))
-		TObjectPtr<UButton> TestButton;
+	UPROPERTY(BlueprintReadOnly, Category = "Equipment Base", Meta = (BindWidget))
+		TObjectPtr<UEquipment> Equipments;
+	UPROPERTY(BlueprintReadOnly, Category = "Inventory Base", Meta = (BindWidget))
+		TObjectPtr<UInventoryList> InventoryList;
 };
