@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "Kismet/GameplayStatics.h"
 
-#define EVENT_MANAGER SimpleEngineUtil::GetPublicEventManager
+#define EVENT SimpleEngineUtil::GetPublicEventManager
+#define RESOURCE SimpleEngineUtil::GetPublicResourceProvider
 /**
  *
  */
@@ -115,6 +116,7 @@ public:
 	static UWorld* ModeWorld;
 
 	static class UEventManager* GetPublicEventManager();
+	static class UResourceProvider* GetPublicResourceProvider();
 };
 
 /**

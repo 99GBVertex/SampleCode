@@ -13,8 +13,14 @@ UFSM::~UFSM()
 	CurrentState = nullptr;
 }
 
+void UFSM::Init()
+{
+	bAllowTickable = true;
+}
+
 void UFSM::Release()
 {
+	bAllowTickable = false;
 	if (IsValid(CurrentState))
 	{
 		Cast<UState>(CurrentState)->EndState();

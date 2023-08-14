@@ -18,7 +18,7 @@ void UStartState::StartState()
 
 void UStartState::BindEventCalls()
 {
-	if(EVENT_MANAGER()) EVENT_MANAGER()->AddReceiver(this, { EEventType::msg_rpl_hello });
+	if(EVENT()) EVENT()->AddReceiver(this, { EEventType::msg_rpl_hello });
 }
 
 void UStartState::OnBoundEventBroadCast(EEventType eventType, EventMsgPtr message)
@@ -41,7 +41,7 @@ void UStartState::OnBoundEventBroadCast(EEventType eventType, EventMsgPtr messag
 
 void UStartState::UnBindEventCalls()
 {
-	if (EVENT_MANAGER()) EVENT_MANAGER()->AddReceiver(this, { EEventType::msg_rpl_hello });
+	if (EVENT()) EVENT()->AddReceiver(this, { EEventType::msg_rpl_hello });
 }
 
 void UStartState::EndState()

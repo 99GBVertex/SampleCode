@@ -28,3 +28,12 @@ UEventManager* SimpleEngineUtil::GetPublicEventManager()
 	}
 	return nullptr;
 }
+
+UResourceProvider* SimpleEngineUtil::GetPublicResourceProvider()
+{
+	TObjectPtr<USimpleGameInstnace> SGInstance = SimpleEngineUtil::GetGameInstance<USimpleGameInstnace>();
+	if (IsValid(SGInstance) && SGInstance->IsValidLowLevel()) {
+		return SGInstance->resourceProvier;
+	}
+	return nullptr;
+}

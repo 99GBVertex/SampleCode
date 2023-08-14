@@ -17,7 +17,7 @@ void UInventoryPage::UIConstuctor()
 {
 	Super::UIConstuctor();
 	if (IsValid(Equipments)) {
-
+		Equipments->SetEquipment();
 	}
 
 	if (IsValid(InventoryList)) {

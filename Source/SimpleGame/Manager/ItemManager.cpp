@@ -10,7 +10,7 @@ void UItemManager::Init()
 {
 	Weapons.Empty();
 	Armors.Empty();
-	equipmentSlots.Empty();
+	EquipmentSlots.Empty();
 
 	Weapons.Reserve(kDefaultWeaponInventorySize);
 	Armors.Reserve(kDefaultArmorInventorySize);
@@ -54,8 +54,13 @@ bool UItemManager::CreateWeapon(int32 inIndex, TSharedPtr<FWeapon>& outWeapon)
 		outWeapon = MakeShared<FWeapon>();
 	}
 	outWeapon->index = inIndex;
+
 	outWeapon->productData.productSection = curItem->itemSection;
 	outWeapon->productData.productType = curItem->itemType;
+	outWeapon->productData.productGrade = curItem->itemGrade;
+
+	outWeapon->resourceData.sprite_Optr = curItem->item_sprite_Optr;
+	outWeapon->resourceData.mesh_Optr = curItem->item_mesh_Optr;
 
 	outWeapon->SetTableKey();
 	return true;

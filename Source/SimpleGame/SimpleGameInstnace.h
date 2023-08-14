@@ -25,6 +25,7 @@ public:
 
 private:
 	TObjectPtr<class UEventManager> eventMgr;
+	TObjectPtr<class UResourceProvider> resourceProvier;
 
 	friend class SimpleEngineUtil;
 };

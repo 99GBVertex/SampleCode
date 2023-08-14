@@ -15,7 +15,9 @@ void UEventManager::Init()
 
 void UEventManager::Release()
 {
-	StateEventPool.Empty();
+	if (!StateEventPool.IsEmpty()) {
+		StateEventPool.Empty();
+	}	
 }
 
 void UEventManager::AddReceiver(const TObjectPtr<UState>& Handler, const TArray<EEventType> bindTypes)

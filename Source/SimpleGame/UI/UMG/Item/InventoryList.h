@@ -7,6 +7,7 @@
 #include "InventoryList.generated.h"
 
 class UUniformGridPanel;
+class UScrollBox;
 class UInventoryItem;
 /**
  * 
@@ -22,9 +23,14 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Inventory", Meta = (BindWidget))
 		TObjectPtr<UUniformGridPanel> ItemUniformGridPanel;
+	UPROPERTY(BlueprintReadOnly, Category = "Inventory", Meta = (BindWidget))
+		TObjectPtr<UScrollBox> ItemScrollBox;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Inventory")
 		TSubclassOf<UInventoryItem> InventoryItemWidget;
 
 	UPROPERTY()
 		TArray<TObjectPtr<UInventoryItem>> itemPool;
+
+private:
+	const int32 kSlotCount = 4;
 };

@@ -20,10 +20,15 @@ public:
 	virtual ~UFSM();
 
 	//~ Begin FTickableGameObject
+private:
 	virtual void Tick(float DeltaTime) override;
 	virtual TStatId GetStatId() const override { return Super::GetStatID(); }
+	bool bAllowTickable = false;	
+	virtual bool IsAllowedToTick() const override { return bAllowTickable; }
 	//~ End FTickableGameObject
+public:
 
+	void Init();
 	void Release();
 
 	void AddState(UObject* State);
@@ -46,8 +51,8 @@ public:
 	TArray<UObject*> GetAllState() { return States; }
 
 protected:
-	UPROPERTY() UObject* PreState = nullptr;
-	UPROPERTY() UObject* CurrentState = nullptr;
+	UPROPERTY() TObjectPtr<UObject> PreState = nullptr;
+	UPROPERTY() TObjectPtr<UObject> CurrentState = nullptr;
 
 	UPROPERTY() TArray<UObject*> NaviStateStack;
 	UPROPERTY() TArray<UObject*> States;

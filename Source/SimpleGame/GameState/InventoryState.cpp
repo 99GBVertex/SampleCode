@@ -16,7 +16,7 @@ void UInventoryState::StartState()
 
 void UInventoryState::BindEventCalls()
 {
-	if(EVENT_MANAGER()) EVENT_MANAGER()->AddReceiver(this, { EEventType::msg_rpl_Inventory });
+	if(EVENT()) EVENT()->AddReceiver(this, { EEventType::msg_rpl_Inventory });
 }
 
 void UInventoryState::OnBoundEventBroadCast(EEventType eventType, EventMsgPtr message)
@@ -37,7 +37,7 @@ void UInventoryState::OnBoundEventBroadCast(EEventType eventType, EventMsgPtr me
 
 void UInventoryState::UnBindEventCalls()
 {
-	if (EVENT_MANAGER()) EVENT_MANAGER()->AddReceiver(this, { EEventType::msg_rpl_Inventory });
+	if (EVENT()) EVENT()->AddReceiver(this, { EEventType::msg_rpl_Inventory });
 }
 
 void UInventoryState::EndState()

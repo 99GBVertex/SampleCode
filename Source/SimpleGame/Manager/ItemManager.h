@@ -42,8 +42,9 @@ private:
 	// table data
 	TArray<FItemTable> ItemTable;
 
-	// base structure
+	// base structure	
 	TArray<TSharedPtr<FWeapon>> Weapons;
 	TArray<TSharedPtr<FArmor>> Armors;
-	TArray<TSharedPtr<FEquipmentSlot>> equipmentSlots;
+
+	TArray<TSharedPtr<FEquipmentSlot>> EquipmentSlots;
 };

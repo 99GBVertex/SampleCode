@@ -38,6 +38,7 @@ struct SIMPLEGAME_API FProductData
 public:
 	UPROPERTY()	EProductSection productSection = EProductSection::NONE;
 	UPROPERTY()	EProductType productType = EProductType::NONE;
+	UPROPERTY()	EProductGrade productGrade = EProductGrade::NONE;
 };
 
 USTRUCT()
@@ -71,7 +72,9 @@ public:
 	UPROPERTY() int64 id = 0;
 	UPROPERTY() int32 index = 0;
 	UPROPERTY() int64 expireDate = 0;
+	UPROPERTY() EEquipState equipState = EEquipState::NONE;
 	UPROPERTY()	FProductData productData;
+	UPROPERTY()	FResourceData resourceData;
 private:
 	TArray<TSharedPtr<FAttributeInfo>> attributeList;
 	FString nameTableKey = "";

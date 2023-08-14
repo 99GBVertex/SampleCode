@@ -87,7 +87,7 @@ void OnRplSimpleHello(const SimplePacket* packet)
 		int32 headerSize = 0;
 		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplPacket->protocolId, rplPacket->resultCode))
 		{
-			EVENT_MANAGER()->CallEvent(EEventType::msg_rpl_hello);
+			EVENT()->CallEvent(EEventType::msg_rpl_hello);
 		}
 	}
 }
@@ -101,7 +101,7 @@ void OnRplSimpleGetInventory(const SimplePacket* packet)
 		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplPacket->protocolId, rplPacket->resultCode))
 		{
 			UItemManager::Instance()->BindInventoryData(rplPacket->NetItemDatas, rplPacket->NetAttDatas);
-			EVENT_MANAGER()->CallEvent(EEventType::msg_rpl_Inventory);
+			EVENT()->CallEvent(EEventType::msg_rpl_Inventory);
 		}
 	}
 }

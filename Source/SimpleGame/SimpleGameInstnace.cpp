@@ -7,6 +7,8 @@
 #include "Manager/UIManager.h"
 #include "Manager/GameEvent/EventManager.h"
 
+#include "UI/UMG/Provider/ResourceProvider.h"
+
 
 USimpleGameInstnace::USimpleGameInstnace()
 {
@@ -36,6 +38,11 @@ void USimpleGameInstnace::Init()
 		eventMgr = NewObject<UEventManager>();
 	}
 	eventMgr->Init();
+
+	if (!IsValid(resourceProvier)) {
+		resourceProvier = NewObject<UResourceProvider>();
+	}
+	resourceProvier->Init();
 }
 
 void USimpleGameInstnace::Shutdown()
@@ -48,6 +55,10 @@ void USimpleGameInstnace::Shutdown()
 	if (IsValid(eventMgr)) {
 		eventMgr->Release();
 		eventMgr = nullptr;
+	}
+	if (IsValid(resourceProvier)) {
+		resourceProvier->Release();
+		resourceProvier = nullptr;
 	}
 
 	Super::Shutdown();

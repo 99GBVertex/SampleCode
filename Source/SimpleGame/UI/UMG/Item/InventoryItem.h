@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Define.h"
 #include "Blueprint/UserWidget.h"
 #include "InventoryItem.generated.h"
 
@@ -19,8 +20,12 @@ class SIMPLEGAME_API UInventoryItem : public UUserWidget
 	
 public:
 	void SetInventoryItem(const TWeakPtr<FItemBase>& itemData);
+	void SetDefault(EProductType pType);
+	void SetEmpty();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Inventory Item", Meta = (BindWidget))
 		TObjectPtr<class UButton> ItemButton;
+	UPROPERTY(BlueprintReadOnly, Category = "Inventory Item", Meta = (BindWidget))
+		TObjectPtr<class UImage> Img_Item;
 };

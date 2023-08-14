@@ -12,7 +12,10 @@
 
 ASimpleGameMode::ASimpleGameMode()
 {
-	
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+		
+	}
 }
 
 void ASimpleGameMode::StartPlay() 
@@ -25,22 +28,21 @@ void ASimpleGameMode::StartPlay()
 		Logout(nullptr);
 		return;
 	}
-
 	FSM_ADDSTATE(GameFSM, UStartState);
 	FSM_ADDSTATE(GameFSM, UInventoryState);
 	FSM_ADDSTATE(GameFSM, UBattleFieldState);
+	GameFSM->Init();
 
 	ChangeStateEnum(EGameState::START);
 }
 
 void ASimpleGameMode::Logout(AController* Exiting)
 {
-	Super::Logout(Exiting);
-
-	if (!IsValid(GameFSM))
+	if (IsValid(GameFSM))
 	{
 		GameFSM->Release();
 	}
+	Super::Logout(Exiting);
 }
 
 void ASimpleGameMode::ChangeStateEnum(EGameState state)

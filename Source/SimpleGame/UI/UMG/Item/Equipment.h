@@ -16,6 +16,9 @@ class SIMPLEGAME_API UEquipment : public USimpleUserWidget
 	GENERATED_BODY()
 
 public:
+	void SetEquipment();
+
+protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidget))
 		TObjectPtr<UInventoryItem> EquippedWeapon;
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidget))
@@ -25,6 +28,5 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidget))
 		TObjectPtr<UInventoryItem> EquippedGloves;
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidget))
-		TObjectPtr<UInventoryItem> EquippedBoots;
-	
+		TObjectPtr<UInventoryItem> EquippedBoots;	
 };

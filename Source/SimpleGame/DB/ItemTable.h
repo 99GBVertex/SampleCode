@@ -26,6 +26,9 @@ public:
 		EProductType itemType = EProductType::NONE;
 
 	UPROPERTY(EditAnywhere, Category = "Item")
+		EProductGrade itemGrade = EProductGrade::NONE;
+
+	UPROPERTY(EditAnywhere, Category = "Item")
 		TSoftObjectPtr<UPaperSprite> item_sprite_Optr;
 
 	UPROPERTY(EditAnywhere, Category = "Item")
