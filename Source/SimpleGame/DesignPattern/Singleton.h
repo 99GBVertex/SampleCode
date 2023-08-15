@@ -8,7 +8,7 @@
  * 
  */
 template <typename Type>
-class FSingleton
+struct FSingleton
 {
 public:
 	FSingleton() { Inst = nullptr; }

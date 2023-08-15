@@ -7,7 +7,7 @@
 void UTestServer::Tick(float DeltaTime)
 {
 	if (!packets.IsEmpty()) {
-		const SimplePacket* curPacket;
+		const USimplePacket* curPacket;
 		packets.Dequeue(curPacket);
 
 		AsyncTask(ENamedThreads::GameThread, [this, curPacket]() {
@@ -21,12 +21,12 @@ TStatId UTestServer::GetStatId() const
 	RETURN_QUICK_DECLARE_CYCLE_STAT(UTestServer, STATGROUP_Tickables);
 }
 
-void ServerReflectHello(const SimplePacket* qryPacket)
+void ServerReflectHello(const USimplePacket* qryPacket)
 {
 	
 }
 
-void UTestServer::Dispatch(const SimplePacket* qryPacket)
+void UTestServer::Dispatch(const USimplePacket* qryPacket)
 {
 	if(!qryPacket) return;
 
@@ -35,9 +35,9 @@ void UTestServer::Dispatch(const SimplePacket* qryPacket)
 	{
 	case QryHello:
 	{
-		const QrySimpleHello* qryHello = dynamic_cast<const QrySimpleHello*>(qryPacket);
+		const UQrySimpleHello* qryHello = Cast<UQrySimpleHello>(qryPacket);
 		if (qryHello) {
-			RplSimpleHello* helloInfo = new RplSimpleHello();
+			URplSimpleHello* helloInfo = NewObject<URplSimpleHello>();
 			helloInfo->protocolId = ProtocolId::RplHello;
 			helloInfo->accountTocken = 2313549687122;
 
@@ -48,9 +48,9 @@ void UTestServer::Dispatch(const SimplePacket* qryPacket)
 
 	case QryGetInventory:
 	{
-		const QrySimpleGetInventory* qryInventory = dynamic_cast<const QrySimpleGetInventory*>(qryPacket);
+		const UQrySimpleGetInventory* qryInventory = Cast<UQrySimpleGetInventory>(qryPacket);
 		if (qryInventory) {
-			RplSimpleGetInventory* rplInven = new RplSimpleGetInventory();
+			URplSimpleGetInventory* rplInven = NewObject<URplSimpleGetInventory>();
 			rplInven->protocolId = ProtocolId::RplGetInventory;
 			FillUserInventory(rplInven->NetItemDatas, rplInven->NetAttDatas);
 
@@ -64,11 +64,10 @@ void UTestServer::Dispatch(const SimplePacket* qryPacket)
 		break;
 	}
 
-	delete qryPacket;
 	qryPacket = nullptr;
 }
 
-bool UTestServer::FillUserInventory(TArray<NetItemData>& refItemDatas, TArray<NetAttributeData>& refAttDatas)
+bool UTestServer::FillUserInventory(TArray<FNetItemData>& refItemDatas, TArray<FNetAttributeData>& refAttDatas)
 {
 	refItemDatas.Empty();
 	refAttDatas.Empty();
@@ -86,7 +85,7 @@ void UTestServer::ServerOpen()
 	ItemDatas.Reserve(kItemDefaultPoolSize);
 	AttDatas.Reserve(kAttributeDefaultPoolSize);
 
-	NetItemData swordA;
+	FNetItemData swordA;
 	swordA.ID = 21322211;
 	swordA.Index = 1100001;
 	swordA.Quantity = 1;
@@ -94,7 +93,7 @@ void UTestServer::ServerOpen()
 	swordA.EquipState = 2;
 	swordA.ExpireDate = 0;
 
-	NetItemData swordB;
+	FNetItemData swordB;
 	swordB.ID = 21322212;
 	swordB.Index = 1100002;
 	swordB.Quantity = 1;
@@ -102,7 +101,7 @@ void UTestServer::ServerOpen()
 	swordB.EquipState = 2;
 	swordB.ExpireDate = 0;
 
-	NetItemData swordC;
+	FNetItemData swordC;
 	swordC.ID = 21322213;
 	swordC.Index = 1100003;
 	swordC.Quantity = 1;
@@ -123,7 +122,7 @@ void UTestServer::ServerClose()
 	AttDatas.Empty();
 }
 
-void UTestServer::AddBuffer(const SimplePacket* packet)
+void UTestServer::AddBuffer(const USimplePacket* packet)
 {
 	packets.Enqueue(packet);
 }

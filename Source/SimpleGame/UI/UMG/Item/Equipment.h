@@ -6,6 +6,7 @@
 #include "UI/UMG/SimpleUserWidget.h"
 #include "Equipment.generated.h"
 
+class UInventoryPage;
 class UInventoryItem;
 /**
  * 
@@ -16,6 +17,7 @@ class SIMPLEGAME_API UEquipment : public USimpleUserWidget
 	GENERATED_BODY()
 
 public:
+	void SetRoot(const TObjectPtr<UInventoryPage>& InRootPage);
 	void SetEquipment();
 
 protected:
@@ -28,5 +30,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidget))
 		TObjectPtr<UInventoryItem> EquippedGloves;
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidget))
-		TObjectPtr<UInventoryItem> EquippedBoots;	
+		TObjectPtr<UInventoryItem> EquippedBoots;
+
+private:
+	UPROPERTY()
+		TObjectPtr<UInventoryPage> RootPage;
 };

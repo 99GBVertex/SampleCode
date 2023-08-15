@@ -16,6 +16,16 @@ void UInventoryPage::NativeConstruct()
 void UInventoryPage::UIConstuctor()
 {
 	Super::UIConstuctor();
+	ResetUIInventoryPage();
+}
+
+void UInventoryPage::UIDestructor()
+{
+	Super::UIDestructor();
+}
+
+void UInventoryPage::ResetUIInventoryPage()
+{
 	if (IsValid(Equipments)) {
 		Equipments->SetEquipment();
 	}
@@ -25,7 +35,16 @@ void UInventoryPage::UIConstuctor()
 	}
 }
 
-void UInventoryPage::UIDestructor()
+void UInventoryPage::EquipmentEquipStateChanged(const TObjectPtr<UEquipment>& InEquipments)
 {
-	Super::UIDestructor();
+	if (IsValid(InventoryList)) {
+		InventoryList->SetInventoryList();
+	}
+}
+
+void UInventoryPage::InventoryEquipStateChanged(const TObjectPtr<UInventoryList>& InInventory)
+{
+	if (IsValid(Equipments)) {
+		Equipments->SetEquipment();
+	}
 }

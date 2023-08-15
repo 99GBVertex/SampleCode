@@ -52,7 +52,7 @@ protected:
 		if (WidgetClass != nullptr)
 		{
 			UIWidget = CreateWidget<USimpleUserWidget>(RootUI, WidgetClass);
-			UOverlaySlot* layerSlot = dynamic_cast<UOverlaySlot*>(RootUI->AddChild(UIWidget));
+			UOverlaySlot* layerSlot = Cast<UOverlaySlot>(RootUI->AddChild(UIWidget));
 			if (layerSlot) {
 				layerSlot->SetHorizontalAlignment(HAlign_Fill);
 				layerSlot->SetVerticalAlignment(VAlign_Fill);

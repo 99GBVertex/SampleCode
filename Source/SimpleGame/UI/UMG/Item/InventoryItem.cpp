@@ -3,16 +3,18 @@
 
 #include "InventoryItem.h"
 
-#include "Components/Button.h"
 #include "Components/Image.h"
 
-#include "Manager/ItemStruct.h"
-#include "UI/UMG/Provider/ResourceProvider.h"
 #include "Misc/SimpleEngineUtil.h"
+#include "Manager/ItemStruct.h"
+
+#include "UI/UMG/Provider/ResourceProvider.h"
+#include "UI/UMG/SGButton.h"
 
 void UInventoryItem::SetInventoryItem(const TWeakPtr<FItemBase>& itemData)
 {
 	if(!itemData.IsValid()) {
+		SetEmpty();
 		return;
 	}
 	const FItemBase* curItem = itemData.Pin().Get();

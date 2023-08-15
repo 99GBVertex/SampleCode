@@ -38,8 +38,8 @@ const TSoftObjectPtr<UPaperSprite> UResourceProvider::GetTypeDefaultUI(EProductT
 	{
 		if(loadTarget.Contains(asset.AssetName))
 		{
-			EProductType pType = loadTarget[asset.AssetName];
-			DefaultUIObjectTable.Emplace(pType, TSoftObjectPtr<UPaperSprite>(asset.GetSoftObjectPath()));
+			EProductType loadType = loadTarget[asset.AssetName];
+			DefaultUIObjectTable.Emplace(loadType, TSoftObjectPtr<UPaperSprite>(asset.GetSoftObjectPath()));
 		}
 	}
 	if (DefaultUIObjectTable.Num() ==0 || !DefaultUIObjectTable.Contains(pType)) {

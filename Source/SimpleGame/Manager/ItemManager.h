@@ -11,8 +11,8 @@
 #include "DesignPattern/Singleton.h"
 #include "ItemManager.generated.h"
 
-class NetItemData;
-class NetAttributeData;
+struct FNetItemData;
+struct FNetAttributeData;
 
 /**
  * 
@@ -33,10 +33,17 @@ public:
 	// bind network
 	bool CreateWeapon(int32 inIndex, TSharedPtr<FWeapon>& outWeapon);
 	bool CreateArmor(int32 inIndex, TSharedPtr<FArmor>& outArmor);
-	void BindInventoryData(const TArray<NetItemData>& netItems, const TArray<NetAttributeData>& netAtts);
+	void BindInventoryData(const TArray<FNetItemData>& netItems, const TArray<FNetAttributeData>& netAtts);
+
+	// Optimization// Data collect steps before post to server by Frequent Request
+	void UpdateItemPrepare(int64 id, uint8 slotIdx, EProductType pType, EEquipState eState);
+	void UpdateItemImmediately(int64 id, uint8 slotIdx, EProductType pType, EEquipState eState);
+	void UpdateItemsToServer();
 
 	// Getter
+	TWeakPtr<FEquipmentSlot> GetEquipment(uint8 slotIdx);
 	TArray<TWeakPtr<FWeapon>> GetWeapons(EProductSection typeSection = EProductSection::NONE);
+	TArray<TWeakPtr<FArmor>> GetArmors(EProductSection typeSection = EProductSection::NONE);
 
 private:
 	// table data

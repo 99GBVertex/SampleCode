@@ -2,11 +2,22 @@
 
 
 #include "UI/UMG/Item/InventoryList.h"
+
 #include "Components/UniformGridPanel.h"
 #include "Components/UniformGridSlot.h"
 #include "Components/ScrollBox.h"
+
 #include "Manager/ItemManager.h"
+
+#include "UI/UMG/Page/InventoryPage.h"
 #include "UI/UMG/Item/InventoryItem.h"
+#include "UI/UMG/SGButton.h"
+
+
+void UInventoryList::SetRoot(const TObjectPtr<UInventoryPage>& InRootPage)
+{
+	RootPage = InRootPage;
+}
 
 void UInventoryList::SetInventoryList()
 {
@@ -40,12 +51,12 @@ void UInventoryList::SetInventoryList()
 	weapons.Sort(combinedLambda);
 	
 	int uiCnt = 0;
-	UInventoryItem* currentItem = nullptr;
+	TObjectPtr<UInventoryItem> currentItem = nullptr;
 	for (int i = 0; i < weapons.Num(); i++)
 	{
 		if (uiCnt < ItemUniformGridPanel->GetChildrenCount())
 		{
-			UWidget* child = ItemUniformGridPanel->GetChildAt(uiCnt);
+			TObjectPtr<UWidget> child = ItemUniformGridPanel->GetChildAt(uiCnt);
 			currentItem = Cast<UInventoryItem>(child);
 		}
 		else
@@ -54,13 +65,15 @@ void UInventoryList::SetInventoryList()
 			ItemUniformGridPanel->AddChildToUniformGrid(currentItem);
 		}
 
-		if (currentItem == nullptr)
+		if (!IsValid(currentItem)) {
 			continue;
-		UUniformGridSlot* slot = Cast<UUniformGridSlot>(currentItem->Slot);
-		if (slot) {
+		}
+
+		TObjectPtr<UUniformGridSlot> slot = Cast<UUniformGridSlot>(currentItem->Slot);
+		if (IsValid(slot)) {
 			slot->SetRow(uiCnt / kSlotCount);
 			slot->SetColumn(uiCnt % kSlotCount);
-			slot->HorizontalAlignment = EHorizontalAlignment::HAlign_Fill;
+			slot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
 			slot->SynchronizeProperties();
 		}
 		++uiCnt;
@@ -71,23 +84,34 @@ void UInventoryList::SetInventoryList()
 			TWeakPtr<FWeapon> curItemInfo = weapons[i];
 
 			currentItem->SetInventoryItem(curItemInfo);
+			TObjectPtr<USGButton> currentItemButton = currentItem->GetItemButton();
+			if (IsValid(currentItemButton)) 
+			{
+				if (!currentItemButton->OnClickedReturnSelf.Contains(this, "OnMount")) {
+					currentItemButton->OnClickedReturnSelf.AddUniqueDynamic(this, &ThisClass::OnMount);
+				}
+			}
 			itemPool.Emplace(currentItem);
 		}
 	}
 
 	for (int i = uiCnt; i < ItemUniformGridPanel->GetChildrenCount(); i++)
 	{		
-		UWidget* child = ItemUniformGridPanel->GetChildAt(i);
-		if (child == nullptr)
+		TObjectPtr<UWidget> child = ItemUniformGridPanel->GetChildAt(i);
+		if (!IsValid(child) || !child->IsA<UInventoryItem>())
 			continue;
-
-		currentItem = (UInventoryItem*)child;
+		currentItem = Cast<UInventoryItem>(child);
 		currentItem->SetEmpty();
 		currentItem->SetVisibility(ESlateVisibility::Collapsed);	
 	}
 
 	ItemScrollBox->ScrollToStart();
 	ItemScrollBox->EndInertialScrolling();
+}
+
+void UInventoryList::OnMount(UWidget* clickedWidget)
+{
+	//Call UpdateItemImmediately();
 }
 
 

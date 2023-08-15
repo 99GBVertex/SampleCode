@@ -27,14 +27,14 @@ void UNetworkManager::Release()
 	net_handlers.Empty();
 }
 
-void UNetworkManager::Bind(ProtocolId packetType, void(*handler)(const SimplePacket*))
+void UNetworkManager::Bind(ProtocolId packetType, void(*handler)(const USimplePacket*))
 {
 	if (net_handlers.Num() == 0 || !net_handlers.Contains(packetType)) {
 		net_handlers.Emplace(packetType , handler);
 	}
 }
 
-bool UNetworkManager::Dispatch(ProtocolId packetType, const SimplePacket* packet)
+bool UNetworkManager::Dispatch(ProtocolId packetType, const USimplePacket* packet)
 {
 	if (!packet) {
 		UE_LOG(LogTemp, Log, TEXT("Invalid Packet: protocol [%d]"), (uint16)packetType);
@@ -49,7 +49,6 @@ bool UNetworkManager::Dispatch(ProtocolId packetType, const SimplePacket* packet
 	auto f = net_handlers[packetType];
 	f(packet);
 
-	delete packet;
 	packet = nullptr;
 	return true;
 }
@@ -67,7 +66,7 @@ bool UNetworkManager::NetWorkResultCodeCheck(ProtocolId InProtocolID, uint16 InR
 
 void UNetworkManager::SendHello()
 {
-	QrySimpleHello* qryPacket = new QrySimpleHello();
+	UQrySimpleHello* qryPacket = NewObject<UQrySimpleHello>();
 	qryPacket->protocolId = ProtocolId::QryHello;
 	qryPacket->accountID = 1;
 	if(testServer) testServer->AddBuffer(qryPacket);
@@ -75,14 +74,14 @@ void UNetworkManager::SendHello()
 
 void UNetworkManager::SendGetInventory()
 {
-	QrySimpleGetInventory* qryPacket = new QrySimpleGetInventory();
+	UQrySimpleGetInventory* qryPacket = NewObject<UQrySimpleGetInventory>();
 	qryPacket->protocolId = ProtocolId::QryGetInventory;
 	if (testServer) testServer->AddBuffer(qryPacket);
 }
 
-void OnRplSimpleHello(const SimplePacket* packet)
+void OnRplSimpleHello(const USimplePacket* packet)
 {
-	const RplSimpleHello* rplPacket = dynamic_cast<const RplSimpleHello*>(packet);
+	const URplSimpleHello* rplPacket = Cast<URplSimpleHello>(packet);
 	if (rplPacket) {
 		int32 headerSize = 0;
 		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplPacket->protocolId, rplPacket->resultCode))
@@ -93,9 +92,9 @@ void OnRplSimpleHello(const SimplePacket* packet)
 }
 
 
-void OnRplSimpleGetInventory(const SimplePacket* packet)
+void OnRplSimpleGetInventory(const USimplePacket* packet)
 {
-	const RplSimpleGetInventory* rplPacket = dynamic_cast<const RplSimpleGetInventory*>(packet);
+	const URplSimpleGetInventory* rplPacket = Cast<URplSimpleGetInventory>(packet);
 	if (rplPacket) {
 		int32 headerSize = 0;
 		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplPacket->protocolId, rplPacket->resultCode))

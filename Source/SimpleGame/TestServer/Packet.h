@@ -2,24 +2,31 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "TestServerDefine.h"
+#include "Packet.generated.h"
 
 /**
  * Is not a general structure
  * like TestClinet, Database is ClientOnly
  */
 
-class SimplePacket
+ /*
+ * as UObject for convenience or UStruct
+ */
+ UCLASS()
+class USimplePacket : public UObject
 {
+	 GENERATED_BODY()
 public:
-	SimplePacket() {};
-	virtual ~SimplePacket() {};
 
 	ProtocolId protocolId = ProtocolId::None;
 };
 
-class NetItemData
+USTRUCT()
+struct FNetItemData
 {
+	GENERATED_BODY()
 public:
 	int64 ID			= 0;
 	int64 ExpireDate	= 0;
@@ -29,8 +36,10 @@ public:
 	uint8 EquipState	= 0;
 };
 
-class NetAttributeData
+USTRUCT()
+struct FNetAttributeData
 {
+	GENERATED_BODY()
 public:
 	int64 ParentsID			= 0;
 	int64 AttributeID		= 0;
@@ -38,27 +47,35 @@ public:
 	uint8 AttributeValue	= 0;
 };
 
-class QrySimpleHello : public SimplePacket
+UCLASS()
+class UQrySimpleHello : public USimplePacket
 {
+	GENERATED_BODY()
 public:
 	int32 accountID;
 };
 
-class RplSimpleHello : public SimplePacket
+UCLASS()
+class URplSimpleHello : public USimplePacket
 {
+	GENERATED_BODY()
 public:
 	NetResultCode resultCode = NetResultCode::NoError;
 	int64 accountTocken;
 };
 
-class QrySimpleGetInventory : public SimplePacket
+UCLASS()
+class UQrySimpleGetInventory : public USimplePacket
 {
+	GENERATED_BODY()
 };
 
-class RplSimpleGetInventory : public SimplePacket
+UCLASS()
+class URplSimpleGetInventory : public USimplePacket
 {
+	GENERATED_BODY()
 public:
 	NetResultCode resultCode = NetResultCode::NoError;
-	TArray<NetItemData> NetItemDatas;
-	TArray<NetAttributeData> NetAttDatas;
+	TArray<FNetItemData> NetItemDatas;
+	TArray<FNetAttributeData> NetAttDatas;
 };

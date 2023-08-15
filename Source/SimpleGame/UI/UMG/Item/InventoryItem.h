@@ -10,6 +10,8 @@
 struct FItemBase;
 struct FWeapon;
 struct FArmor;
+
+class USGButton;
 /**
  * 
  */
@@ -23,9 +25,11 @@ public:
 	void SetDefault(EProductType pType);
 	void SetEmpty();
 
+	TObjectPtr<USGButton> GetItemButton() { return ItemButton; }
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Inventory Item", Meta = (BindWidget))
-		TObjectPtr<class UButton> ItemButton;
+		TObjectPtr<USGButton> ItemButton;
 	UPROPERTY(BlueprintReadOnly, Category = "Inventory Item", Meta = (BindWidget))
 		TObjectPtr<class UImage> Img_Item;
 };

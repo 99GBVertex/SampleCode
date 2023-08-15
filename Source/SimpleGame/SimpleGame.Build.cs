@@ -9,12 +9,8 @@ public class SimpleGame : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "NavigationSystem", "AIModule", "Niagara", "EnhancedInput", "UMG", "Paper2D" });
+        PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 
-		PrivateIncludePaths.AddRange(new string[] { "SimpleGame" });
-
-        if (Target.Platform == UnrealTargetPlatform.Win64)
-        {
-            bUseRTTI = true;
-        }
+        PrivateIncludePaths.AddRange(new string[] { "SimpleGame" });
     }
 }

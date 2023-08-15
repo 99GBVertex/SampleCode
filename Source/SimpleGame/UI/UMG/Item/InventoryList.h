@@ -8,6 +8,7 @@
 
 class UUniformGridPanel;
 class UScrollBox;
+class UInventoryPage;
 class UInventoryItem;
 /**
  * 
@@ -18,6 +19,7 @@ class SIMPLEGAME_API UInventoryList : public USimpleUserWidget
 	GENERATED_BODY()
 
 public:
+	void SetRoot(const TObjectPtr<UInventoryPage>& InRootPage);
 	void SetInventoryList();
 
 protected:
@@ -28,9 +30,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Inventory")
 		TSubclassOf<UInventoryItem> InventoryItemWidget;
 
+	UFUNCTION()
+		void OnMount(UWidget* clickedWidget);
+private:
+	UPROPERTY()
+		TObjectPtr<UInventoryPage> RootPage;
 	UPROPERTY()
 		TArray<TObjectPtr<UInventoryItem>> itemPool;
 
-private:
 	const int32 kSlotCount = 4;
+
 };

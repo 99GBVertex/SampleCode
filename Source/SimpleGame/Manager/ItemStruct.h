@@ -8,7 +8,7 @@
 #include "PaperSpriteAtlas.h"
 #include "ItemStruct.generated.h"
 
-class NetItemData;
+struct FNetItemData;
 
 USTRUCT()
 struct SIMPLEGAME_API FPhysXData
@@ -81,7 +81,7 @@ private:
 	FString descriptTableKey = "";
 
 public:
-	void BindNetData(const NetItemData& InNetData);
+	void BindNetData(const FNetItemData& InNetData);
 	void SetTableKey();
 	bool IsExpired() const;
 	bool IsValid() const;
@@ -110,11 +110,13 @@ struct SIMPLEGAME_API FEquipmentSlot
 	
 public:	
 	TWeakPtr<FWeapon> mainWeapon;
-	TWeakPtr<FWeapon> subWeapon;
+	//TWeakPtr<FWeapon> subWeapon;
 	TWeakPtr<FArmor> helmet;
 	TWeakPtr<FArmor> armer;
 	TWeakPtr<FArmor> gloves;
 	TWeakPtr<FArmor> boots;
-
 	UPROPERTY() uint8 slotIndex = 0;
+
+public:
+	TWeakPtr<FItemBase> GetEquipment(EProductType pType);
 };

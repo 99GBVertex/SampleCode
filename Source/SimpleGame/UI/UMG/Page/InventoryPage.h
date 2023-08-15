@@ -28,6 +28,11 @@ public:
 	//~ End USimpleUserWidget
 
 public:
+	void ResetUIInventoryPage();
+	void EquipmentEquipStateChanged(const TObjectPtr<UEquipment>& InEquipments);
+	void InventoryEquipStateChanged(const TObjectPtr<UInventoryList>& InInventory);
+
+protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Equipment Base", Meta = (BindWidget))
 		TObjectPtr<UEquipment> Equipments;
 	UPROPERTY(BlueprintReadOnly, Category = "Inventory Base", Meta = (BindWidget))

@@ -8,8 +8,8 @@
 #include "NetworkManager.generated.h"
 
 class UTestServer;
-class NetItemData;
-class NetAttributeData;
+struct FNetItemData;
+struct FNetAttributeData;
 
 /**
  *
@@ -24,8 +24,8 @@ public:
 	void Init();
 	void Release();
 
-	void Bind(ProtocolId packetType, void(*handler)(const SimplePacket*));
-	bool Dispatch(ProtocolId packetType, const SimplePacket* packet);
+	void Bind(ProtocolId packetType, void(*handler)(const USimplePacket*));
+	bool Dispatch(ProtocolId packetType, const USimplePacket* packet);
 	bool NetWorkResultCodeCheck(ProtocolId InProtocolID, uint16 InResultCode);
 
 	void SendHello();
@@ -35,5 +35,5 @@ private:
 
 private:
 	UTestServer* testServer;
-	TMap<ProtocolId, TFunction<void(const SimplePacket*)>> net_handlers;
+	TMap<ProtocolId, TFunction<void(const USimplePacket*)>> net_handlers;
 };

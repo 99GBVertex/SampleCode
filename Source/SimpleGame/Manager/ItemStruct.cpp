@@ -2,7 +2,7 @@
 #include "ItemStruct.h"
 #include "TestServer/Packet.h"
 
-void FItemBase::BindNetData(const NetItemData& InNetData)
+void FItemBase::BindNetData(const FNetItemData& InNetData)
 {
 	id = InNetData.ID;
 	expireDate = InNetData.ExpireDate;
@@ -64,4 +64,20 @@ TArray<const FAttributeInfo*> FItemBase::GetAttributes() const
 		outAtts.Emplace(setAttribute.Get());
 	}
 	return outAtts;
+}
+
+TWeakPtr<FItemBase> FEquipmentSlot::GetEquipment(EProductType pType)
+{
+	TWeakPtr<FItemBase> outResult = nullptr;
+	switch (pType)
+	{
+	case EProductType::WEAPON:	outResult = mainWeapon; break;
+	case EProductType::ARMOR:	outResult = helmet; break;
+	case EProductType::HELMET:	outResult = armer; break;
+	case EProductType::GLOVES:	outResult = gloves; break;
+	case EProductType::BOOTS:	outResult = boots; break;
+	default:
+		break;
+	}
+	return outResult;
 }
