@@ -34,6 +34,6 @@ private:
 	void SetNetworkEvent();
 
 private:
-	UTestServer* testServer;
+	UPROPERTY() TObjectPtr<UTestServer> testServer;
 	TMap<ProtocolId, TFunction<void(const USimplePacket*)>> net_handlers;
 };

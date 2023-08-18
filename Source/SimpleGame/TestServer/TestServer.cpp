@@ -118,8 +118,12 @@ void UTestServer::ServerClose()
 {
 	bAllowedToTick = false;
 
-	ItemDatas.Empty();
-	AttDatas.Empty();
+	if (ItemDatas.Num() > 0) {
+		ItemDatas.Empty();
+	}
+	if (AttDatas.Num() > 0) {
+		AttDatas.Empty();
+	}
 }
 
 void UTestServer::AddBuffer(const USimplePacket* packet)

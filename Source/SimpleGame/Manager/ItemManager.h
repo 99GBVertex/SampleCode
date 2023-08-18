@@ -34,16 +34,25 @@ public:
 	bool CreateWeapon(int32 inIndex, TSharedPtr<FWeapon>& outWeapon);
 	bool CreateArmor(int32 inIndex, TSharedPtr<FArmor>& outArmor);
 	void BindInventoryData(const TArray<FNetItemData>& netItems, const TArray<FNetAttributeData>& netAtts);
+private:
+	void InitEquipment();
+public:
 
 	// Optimization// Data collect steps before post to server by Frequent Request
-	void UpdateItemPrepare(int64 id, uint8 slotIdx, EProductType pType, EEquipState eState);
-	void UpdateItemImmediately(int64 id, uint8 slotIdx, EProductType pType, EEquipState eState);
-	void UpdateItemsToServer();
+	bool UpdateItemPrepare(int64 id, uint8 slotIdx, EProductType pType, EEquipState eState);
+
+	/*
+	* Update Data Only
+	* @return update able
+	*/
+	bool UpdateItemImmediately(const TWeakPtr<const FItemBase>& updateTarget, EEquipState eState);
+
+	bool UpdateItemsToServer();
 
 	// Getter
-	TWeakPtr<FEquipmentSlot> GetEquipment(uint8 slotIdx);
-	TArray<TWeakPtr<FWeapon>> GetWeapons(EProductSection typeSection = EProductSection::NONE);
-	TArray<TWeakPtr<FArmor>> GetArmors(EProductSection typeSection = EProductSection::NONE);
+	TWeakPtr<const FEquipmentSlot> GetEquipment(uint8 slotIdx);
+	TArray<TWeakPtr<const FWeapon>> GetWeapons(EProductSection typeSection = EProductSection::NONE);
+	TArray<TWeakPtr<const FArmor>> GetArmors(EProductSection typeSection = EProductSection::NONE);
 
 private:
 	// table data

@@ -34,6 +34,7 @@ public:
 	int32 Quantity		= 0;
 	uint8 Level			= 0;
 	uint8 EquipState	= 0;
+	//uint8 Slotidx or SlotState
 };
 
 USTRUCT()

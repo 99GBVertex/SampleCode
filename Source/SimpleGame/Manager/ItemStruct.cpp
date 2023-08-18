@@ -6,6 +6,7 @@ void FItemBase::BindNetData(const FNetItemData& InNetData)
 {
 	id = InNetData.ID;
 	expireDate = InNetData.ExpireDate;
+	equipState = static_cast<EEquipState>(InNetData.EquipState);
 }
 
 void FItemBase::SetTableKey()
@@ -66,14 +67,29 @@ TArray<const FAttributeInfo*> FItemBase::GetAttributes() const
 	return outAtts;
 }
 
-TWeakPtr<FItemBase> FEquipmentSlot::GetEquipment(EProductType pType)
+void FEquipmentSlot::ClearEquipment()
 {
-	TWeakPtr<FItemBase> outResult = nullptr;
+	mainWeapon.Reset();
+	helmet.Reset();
+	armor.Reset();
+	gloves.Reset();
+	boots.Reset();
+}
+
+bool FEquipmentSlot::IsEquipment(EProductType pType) const
+{
+	TWeakPtr<const FItemBase> curEquipment = GetEquipment(pType);
+	return curEquipment.IsValid();
+}
+
+TWeakPtr<const FItemBase> FEquipmentSlot::GetEquipment(EProductType pType) const
+{
+	TWeakPtr<const FItemBase> outResult = nullptr;
 	switch (pType)
 	{
 	case EProductType::WEAPON:	outResult = mainWeapon; break;
 	case EProductType::ARMOR:	outResult = helmet; break;
-	case EProductType::HELMET:	outResult = armer; break;
+	case EProductType::HELMET:	outResult = armor; break;
 	case EProductType::GLOVES:	outResult = gloves; break;
 	case EProductType::BOOTS:	outResult = boots; break;
 	default:

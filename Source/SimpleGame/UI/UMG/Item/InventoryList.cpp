@@ -22,23 +22,27 @@ void UInventoryList::SetRoot(const TObjectPtr<UInventoryPage>& InRootPage)
 void UInventoryList::SetInventoryList()
 {
 	// weapons
-	TArray<TWeakPtr<FWeapon>> weapons = UItemManager::Instance()->GetWeapons();
-	weapons.RemoveAll([](const TWeakPtr<FWeapon>& row){
-		return !row.IsValid();
+	TArray<TWeakPtr<const FWeapon>> weapons = UItemManager::Instance()->GetWeapons();
+	weapons.RemoveAll([](const TWeakPtr<const FWeapon>& row){
+		if(!row.IsValid()) return true;
+		return row.Pin()->equipState != EEquipState::UNEQUIP;
 	});
 
 	for (int i = 0; i < itemPool.Num(); i++) {
-		//itemPool[i]->OnClickedWith.RemoveAll(this);
+		if (IsValid(itemPool[i]->GetItemButton())) {
+			itemPool[i]->GetItemButton()->OnClickedReturnSelf.RemoveAll(this);
+		}	
 	}
-	auto nameSort = [](const TWeakPtr<FWeapon>& a, const TWeakPtr<FWeapon>& b) { return b.Pin()->GetName().CompareTo(a.Pin()->GetName()); };
-	auto acquSort = [](const TWeakPtr<FWeapon>& a, const TWeakPtr<FWeapon>& b) { return a.Pin()->id == b.Pin()->id ? 0 : a.Pin()->id > b.Pin()->id ? 1 : -1; };
-	auto raritySort = [](const TWeakPtr<FWeapon>& a, const TWeakPtr<FWeapon>& b) { return a.Pin()->productData.productGrade == b.Pin()->productData.productGrade ? 0 : a.Pin()->productData.productGrade < b.Pin()->productData.productGrade ? 1 : -1; };
-	auto equipSort = [](const TWeakPtr<FWeapon>& a, const TWeakPtr<FWeapon>& b) { return a.Pin()->equipState == b.Pin()->equipState ? 0 : a.Pin()->equipState > b.Pin()->equipState ? 1 : -1; };
 
-	TArray<TFunction<int(const TWeakPtr<FWeapon>& a, const TWeakPtr<FWeapon>& b)>> sortSources;
+	const auto nameSort = [](const TWeakPtr<const FWeapon>& a, const TWeakPtr<const FWeapon>& b) { return b.Pin()->GetName().CompareTo(a.Pin()->GetName()); };
+	const auto acquSort = [](const TWeakPtr<const FWeapon>& a, const TWeakPtr<const FWeapon>& b) { return a.Pin()->id == b.Pin()->id ? 0 : a.Pin()->id > b.Pin()->id ? 1 : -1; };
+	const auto raritySort = [](const TWeakPtr<const FWeapon>& a, const TWeakPtr<const FWeapon>& b) { return a.Pin()->productData.productGrade == b.Pin()->productData.productGrade ? 0 : a.Pin()->productData.productGrade < b.Pin()->productData.productGrade ? 1 : -1; };
+	const auto equipSort = [](const TWeakPtr<const FWeapon>& a, const TWeakPtr<const FWeapon>& b) { return a.Pin()->equipState == b.Pin()->equipState ? 0 : a.Pin()->equipState > b.Pin()->equipState ? 1 : -1; };
+
+	TArray<TFunction<int(const TWeakPtr<const FWeapon>& a, const TWeakPtr<const FWeapon>& b)>> sortSources;
 	sortSources = { equipSort, raritySort, acquSort, nameSort };
 
-	auto combinedLambda = [&](const TWeakPtr<FWeapon>& a, const TWeakPtr<FWeapon>& b)->bool {
+	const auto combinedLambda = [&sortSources](const TWeakPtr<const FWeapon>& a, const TWeakPtr<const FWeapon>& b)->bool {
 		int result = 0;
 		for (auto it : sortSources) {
 			if (it(a, b) != 0 || &it == &sortSources.Last()) {
@@ -81,9 +85,7 @@ void UInventoryList::SetInventoryList()
 
 		if (i < weapons.Num() && weapons[i].IsValid())
 		{
-			TWeakPtr<FWeapon> curItemInfo = weapons[i];
-
-			currentItem->SetInventoryItem(curItemInfo);
+			currentItem->SetInventoryItem(weapons[i]);
 			TObjectPtr<USGButton> currentItemButton = currentItem->GetItemButton();
 			if (IsValid(currentItemButton)) 
 			{
@@ -110,8 +112,19 @@ void UInventoryList::SetInventoryList()
 }
 
 void UInventoryList::OnMount(UWidget* clickedWidget)
-{
-	//Call UpdateItemImmediately();
+{	
+	const int poolidx = itemPool.IndexOfByPredicate([clickedWidget](const TObjectPtr<UInventoryItem>& row){
+		return row->GetItemButton() == clickedWidget;
+	});
+	if (poolidx == -1) {
+		// log invalid
+		return;
+	}
+	const TWeakPtr<const FItemBase> cachedItem = itemPool[poolidx]->GetCachedItemInfo();
+	const bool bUpdated = UItemManager::Instance()->UpdateItemImmediately(cachedItem, EEquipState::EQUIP);
+	if (bUpdated && RootPage) {
+		RootPage->InventoryEquipStateChanged(this);
+	}
 }
 
 

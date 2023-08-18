@@ -14,6 +14,8 @@ static constexpr auto TARGET_CANVAS_NAME = TEXT("UICanvas");
 static constexpr int32 kDefaultWeaponInventorySize = 20;
 static constexpr int32 kDefaultArmorInventorySize = 50;
 
+static constexpr uint8 kDefaultSlotIdx = 0;
+
 #define SIMPLE_LOCTEXT(Key) FText::FromStringTable("/Game/DB/StringData/SimpleST.SimpleST", Key)
 
 #define GET_ENUM_STRING(etype, evalue) ( (FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true) != nullptr) ? FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true)->GetNameStringByIndex((int32)evalue) : FString("Invalid - are you sure enum uses UENUM() macro?") )

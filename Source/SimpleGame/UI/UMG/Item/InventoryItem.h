@@ -21,15 +21,19 @@ class SIMPLEGAME_API UInventoryItem : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	void SetInventoryItem(const TWeakPtr<FItemBase>& itemData);
+	void SetInventoryItem(const TWeakPtr<const FItemBase>& InItemData);
 	void SetDefault(EProductType pType);
 	void SetEmpty();
 
 	TObjectPtr<USGButton> GetItemButton() { return ItemButton; }
+	TWeakPtr<const FItemBase> GetCachedItemInfo() { return ButtonCachedItemInfo; }
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Inventory Item", Meta = (BindWidget))
 		TObjectPtr<USGButton> ItemButton;
 	UPROPERTY(BlueprintReadOnly, Category = "Inventory Item", Meta = (BindWidget))
 		TObjectPtr<class UImage> Img_Item;
+
+private:
+	TWeakPtr<const FItemBase> ButtonCachedItemInfo = nullptr;
 };

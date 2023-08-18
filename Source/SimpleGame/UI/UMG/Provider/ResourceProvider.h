@@ -23,6 +23,6 @@ public:
 
 private:
 	TMap<EProductType, TSoftObjectPtr<UPaperSprite>> DefaultUIObjectTable = {};
-	TObjectPtr<UObjectLibrary> ObjectLibrary = nullptr;
+	UPROPERTY() TObjectPtr<UObjectLibrary> ObjectLibrary = nullptr;
 };
 

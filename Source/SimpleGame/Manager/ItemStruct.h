@@ -73,6 +73,7 @@ public:
 	UPROPERTY() int32 index = 0;
 	UPROPERTY() int64 expireDate = 0;
 	UPROPERTY() EEquipState equipState = EEquipState::NONE;
+	//uint8 Slotidx or SlotState
 	UPROPERTY()	FProductData productData;
 	UPROPERTY()	FResourceData resourceData;
 private:
@@ -107,16 +108,20 @@ USTRUCT()
 struct SIMPLEGAME_API FEquipmentSlot
 {
 	GENERATED_BODY()
+
+public:
+	void ClearEquipment();
+	bool IsEquipment(EProductType pType) const;	
+	TWeakPtr<const FItemBase> GetEquipment(EProductType pType) const;
 	
-public:	
+private:
 	TWeakPtr<FWeapon> mainWeapon;
 	//TWeakPtr<FWeapon> subWeapon;
 	TWeakPtr<FArmor> helmet;
-	TWeakPtr<FArmor> armer;
+	TWeakPtr<FArmor> armor;
 	TWeakPtr<FArmor> gloves;
 	TWeakPtr<FArmor> boots;
 	UPROPERTY() uint8 slotIndex = 0;
 
-public:
-	TWeakPtr<FItemBase> GetEquipment(EProductType pType);
+	friend class UItemManager;
 };

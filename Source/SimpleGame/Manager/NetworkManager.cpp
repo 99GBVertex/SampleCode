@@ -12,7 +12,7 @@ void UNetworkManager::Init()
 	net_handlers.Empty();
 	SetNetworkEvent();
 
-	if (!testServer) {
+	if (!IsValid(testServer)) {
 		testServer = NewObject<UTestServer>();
 	}
 	testServer->ServerOpen();
@@ -20,7 +20,7 @@ void UNetworkManager::Init()
 
 void UNetworkManager::Release()
 {
-	if (testServer) {
+	if (IsValid(testServer)) {
 		testServer->ServerClose();
 		testServer = nullptr;
 	}

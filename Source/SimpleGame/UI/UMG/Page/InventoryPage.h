@@ -28,6 +28,7 @@ public:
 	//~ End USimpleUserWidget
 
 public:
+	void InitUIInventoryPage();
 	void ResetUIInventoryPage();
 	void EquipmentEquipStateChanged(const TObjectPtr<UEquipment>& InEquipments);
 	void InventoryEquipStateChanged(const TObjectPtr<UInventoryList>& InInventory);

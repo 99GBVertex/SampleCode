@@ -143,54 +143,158 @@ void UItemManager::BindInventoryData(const TArray<FNetItemData>& netItems, const
 			break;
 		}
 	}
+
+	InitEquipment();
 }
 
-void UItemManager::UpdateItemPrepare(int64 id, uint8 slotIdx, EProductType pType, EEquipState eState)
+void UItemManager::InitEquipment()
 {
-	// pending data
+	// TODO : Add slot-specific interrupters when slot systems are added
+	bool bEquipConflictFlag = false;
 
-}
+	TSharedPtr<FEquipmentSlot> equipment = nullptr;
+	if (EquipmentSlots.Num() == 0) {
+		equipment = MakeShared<FEquipmentSlot>();
+		equipment->slotIndex = kDefaultSlotIdx;
+		EquipmentSlots.Emplace(equipment);
+	}
+	equipment = EquipmentSlots[0];
+	equipment->ClearEquipment();
 
-void UItemManager::UpdateItemImmediately(int64 id, uint8 slotIdx, EProductType pType, EEquipState eState)
-{
-	//Immediately
-	TWeakPtr<FEquipmentSlot> curEquipment = GetEquipment(slotIdx);
-	if (!curEquipment.IsValid()) {
-		//log
+	for (const TSharedPtr<FWeapon>& weapon : Weapons) 
+	{
+		if (weapon->equipState == EEquipState::EQUIP) 
+		{
+			if (equipment->mainWeapon.IsValid()) {
+				bEquipConflictFlag = true;
+				break;
+			}
+			equipment->mainWeapon = weapon;			
+		}
+	}
+	
+	for (const TSharedPtr<FArmor>& armor : Armors)
+	{
+		if (armor->equipState == EEquipState::EQUIP)
+		{
+			if (equipment->mainWeapon.IsValid()) {
+				bEquipConflictFlag = true;
+				break;
+			}
+
+			TWeakPtr<FArmor>* typeEquipment = nullptr;
+			EProductType armorType = armor->productData.productType;
+			switch (armorType)
+			{
+			case EProductType::ARMOR:	typeEquipment = &equipment->armor; break;
+			case EProductType::HELMET:	typeEquipment = &equipment->helmet; break;
+			case EProductType::GLOVES:	typeEquipment = &equipment->gloves; break;
+			case EProductType::BOOTS:	typeEquipment = &equipment->boots; break;
+			default:
+				//log warning
+				continue;
+			}
+
+			if (typeEquipment) {
+				if ((*typeEquipment).IsValid()) {
+					bEquipConflictFlag = true;
+					break;
+				}
+				(*typeEquipment) = armor;
+			}
+		}
+	}
+	if (bEquipConflictFlag) {
+		// todo go Interrupt flow
 		return;
 	}
-
-	if (eState == EEquipState::EQUIP) {
-		
-	}
-	else if (eState == EEquipState::UNEQUIP) {
-		// 가방 검사
-	}
-
-	switch (pType)
-	{
-	case EProductType::WEAPON:
-	case EProductType::ARMOR:
-	case EProductType::HELMET:	
-	case EProductType::GLOVES:	
-	case EProductType::BOOTS:	
-	case EProductType::CONSUMABLE:	
-	case EProductType::QUESTITEM:	
-	default:
-		break;
-	}
-	UpdateItemsToServer();
 }
 
-void UItemManager::UpdateItemsToServer()
+bool UItemManager::UpdateItemPrepare(int64 id, uint8 slotIdx, EProductType pType, EEquipState eState)
+{
+	// pending data
+	return false;
+}
+
+bool UItemManager::UpdateItemImmediately(const TWeakPtr<const FItemBase>& updateTarget, EEquipState eState)
+{
+	if (!updateTarget.IsValid() || !updateTarget.Pin()->IsValid()) {
+		// log some reason
+		return false;
+	}
+	const FItemBase* curTarget = updateTarget.Pin().Get();
+	if (curTarget->IsExpired()) {
+		// log some reason
+		// remove item and reset
+		return true;
+	}
+
+	const int64 tarID = curTarget->id;
+	const EProductType tarPType = curTarget->productData.productType;
+
+	const TWeakPtr<const FEquipmentSlot> curEquipmentSlot = GetEquipment(kDefaultSlotIdx);
+	if (!curEquipmentSlot.IsValid()) {
+		//log
+		return false;
+	}
+	const TWeakPtr<const FItemBase> equippedItemMatches = curEquipmentSlot.Pin()->GetEquipment(tarPType);
+
+	bool bRequiresEquipmentDetachFirst = false;
+	bool bAlterable = false;
+
+	if (eState == EEquipState::EQUIP) 
+	{
+		if (equippedItemMatches.IsValid())
+		{
+			if (equippedItemMatches.Pin()->id == tarID) {
+				// log alreay equipped
+				return false;
+			}
+			else {
+				bRequiresEquipmentDetachFirst = true;
+				bAlterable = true;
+			}
+		}
+		else {
+			bAlterable = true;
+		}
+	}
+	else if (eState == EEquipState::UNEQUIP) 
+	{
+		if (equippedItemMatches.IsValid()) {
+			bAlterable = true;
+		}
+		else {
+			// log alreay unequipped
+			return false;
+		}
+	}
+
+	if (bRequiresEquipmentDetachFirst) {
+		const FItemBase* curEquippedItem = equippedItemMatches.Pin().Get();
+		FItemBase* modifiableEquippedItem = const_cast<FItemBase*>(curEquippedItem);
+		if (modifiableEquippedItem) modifiableEquippedItem->equipState = EEquipState::UNEQUIP;
+	}
+	if (bAlterable) {
+		FItemBase* modifiableTarget = const_cast<FItemBase*>(curTarget);
+		if (modifiableTarget) modifiableTarget->equipState = eState;
+	}
+
+	InitEquipment();
+	UpdateItemsToServer();
+	return true;
+}
+
+bool UItemManager::UpdateItemsToServer()
 {
 	// pending data to Server
+	return false;
 }
 
-TWeakPtr<FEquipmentSlot> UItemManager::GetEquipment(uint8 slotIdx)
+TWeakPtr<const FEquipmentSlot> UItemManager::GetEquipment(uint8 slotIdx)
 {
-	TArray<TWeakPtr<FEquipmentSlot>> outResult;
-	outResult.Append(EquipmentSlots.FilterByPredicate([slotIdx](const TWeakPtr<FEquipmentSlot>& row){
+	TArray<TWeakPtr<const FEquipmentSlot>> outResult;
+	outResult.Append(EquipmentSlots.FilterByPredicate([slotIdx](const TWeakPtr<const FEquipmentSlot>& row){
 		if (!row.Pin()) return false;
 		return row.Pin()->slotIndex == slotIdx;
 	}));
@@ -198,14 +302,14 @@ TWeakPtr<FEquipmentSlot> UItemManager::GetEquipment(uint8 slotIdx)
 	return outResult[0];
 }
 
-TArray<TWeakPtr<FWeapon>> UItemManager::GetWeapons(EProductSection typeSection)
+TArray<TWeakPtr<const FWeapon>> UItemManager::GetWeapons(EProductSection typeSection)
 {
-	TArray<TWeakPtr<FWeapon>> outResult;
+	TArray<TWeakPtr<const FWeapon>> outResult;
 	if (typeSection == EProductSection::NONE) {
 		outResult.Append(Weapons);
 	}
 	else {
-		outResult.Append(Weapons.FilterByPredicate([typeSection](const TWeakPtr<FWeapon>& row) {
+		outResult.Append(Weapons.FilterByPredicate([typeSection](const TWeakPtr<const FWeapon>& row) {
 			if(!row.Pin()) return false;
 			return row.Pin()->productData.productSection == typeSection;
 		}));
@@ -213,17 +317,17 @@ TArray<TWeakPtr<FWeapon>> UItemManager::GetWeapons(EProductSection typeSection)
 	return outResult;
 }
 
-TArray<TWeakPtr<FArmor>> UItemManager::GetArmors(EProductSection typeSection)
+TArray<TWeakPtr<const FArmor>> UItemManager::GetArmors(EProductSection typeSection)
 {
-	TArray<TWeakPtr<FArmor>> outResult;
+	TArray<TWeakPtr<const FArmor>> outResult;
 	if (typeSection == EProductSection::NONE) {
 		outResult.Append(Armors);
 	}
 	else {
-		outResult.Append(Armors.FilterByPredicate([typeSection](const TWeakPtr<FArmor>& row) {
+		outResult.Append(Armors.FilterByPredicate([typeSection](const TWeakPtr<const FArmor>& row) {
 			if (!row.Pin()) return false;
 			return row.Pin()->productData.productSection == typeSection;
-			}));
+		}));
 	}
 	return outResult;
 }

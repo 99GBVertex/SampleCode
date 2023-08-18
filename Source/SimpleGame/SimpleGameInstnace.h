@@ -24,8 +24,8 @@ public:
 	//~ End UGameInstance
 
 private:
-	TObjectPtr<class UEventManager> eventMgr;
-	TObjectPtr<class UResourceProvider> resourceProvier;
+	UPROPERTY() TObjectPtr<class UEventManager> eventMgr;
+	UPROPERTY() TObjectPtr<class UResourceProvider> resourceProvier;
 
 	friend class SimpleEngineUtil;
 };

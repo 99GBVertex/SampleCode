@@ -11,14 +11,15 @@
 #include "UI/UMG/Provider/ResourceProvider.h"
 #include "UI/UMG/SGButton.h"
 
-void UInventoryItem::SetInventoryItem(const TWeakPtr<FItemBase>& itemData)
+void UInventoryItem::SetInventoryItem(const TWeakPtr<const FItemBase>& InItemData)
 {
-	if(!itemData.IsValid()) {
+	if(!InItemData.IsValid()) {
 		SetEmpty();
 		return;
 	}
-	const FItemBase* curItem = itemData.Pin().Get();
-	if(IsValid(Img_Item)) {
+	ButtonCachedItemInfo = InItemData;
+	const FItemBase* curItem = InItemData.Pin().Get();
+	if (IsValid(Img_Item)) {
 		Img_Item->SetBrushResourceObject(curItem->resourceData.sprite_Optr.LoadSynchronous());
 	}
 	if (IsValid(ItemButton)) {
@@ -28,6 +29,7 @@ void UInventoryItem::SetInventoryItem(const TWeakPtr<FItemBase>& itemData)
 
 void UInventoryItem::SetDefault(EProductType pType)
 {
+	ButtonCachedItemInfo = nullptr;
 	if (IsValid(Img_Item)) {
 		Img_Item->SetBrushResourceObject(RESOURCE()->GetTypeDefaultUI(pType).LoadSynchronous());
 	}
@@ -38,8 +40,11 @@ void UInventoryItem::SetDefault(EProductType pType)
 
 void UInventoryItem::SetEmpty()
 {
-	//ItemButton
+	ButtonCachedItemInfo = nullptr;
 	if (IsValid(Img_Item)) {
 		Img_Item->ReleaseSlateResources(true);
+	}
+	if (IsValid(ItemButton)) {
+		ItemButton->SetIsEnabled(false);
 	}
 }

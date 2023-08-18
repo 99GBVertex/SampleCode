@@ -8,6 +8,8 @@
 
 class UInventoryPage;
 class UInventoryItem;
+enum class EProductType : uint8;
+class USGButton;
 /**
  * 
  */
@@ -17,8 +19,17 @@ class SIMPLEGAME_API UEquipment : public USimpleUserWidget
 	GENERATED_BODY()
 
 public:
+	//~ Begin USimpleUserWidget
+	virtual void UIConstuctor() override;
+	virtual void UIDestructor() override;
+	//~ End USimpleUserWidget
+
 	void SetRoot(const TObjectPtr<UInventoryPage>& InRootPage);
 	void SetEquipment();
+
+protected:
+	UFUNCTION()
+		void OnClieckedEquippedSlot(class UWidget* clickedWidget);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Euipment", Meta = (BindWidget))
@@ -35,4 +46,5 @@ protected:
 private:
 	UPROPERTY()
 		TObjectPtr<UInventoryPage> RootPage;
+	TMap<EProductType, TObjectPtr<UInventoryItem>> EquipTable;
 };
