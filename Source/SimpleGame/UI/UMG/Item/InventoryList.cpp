@@ -126,5 +126,3 @@ void UInventoryList::OnMount(UWidget* clickedWidget)
 		RootPage->InventoryEquipStateChanged(this);
 	}
 }
-
-

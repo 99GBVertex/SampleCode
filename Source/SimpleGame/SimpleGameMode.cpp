@@ -10,11 +10,18 @@
 
 #include "DesignPattern/StateType.h"
 
+#include "Character/SwordManCharacter.h"
+
 ASimpleGameMode::ASimpleGameMode()
 {
 	if (!HasAnyFlags(RF_ClassDefaultObject))
 	{
-		
+		// set default pawn class to our Blueprinted character
+		static ConstructorHelpers::FClassFinder<ASwordManCharacter> PlayerPawnBPClass(TEXT("/Game/Characters/SwordMan/Blueprints/BP_SwordMan"));
+		if (PlayerPawnBPClass.Class != nullptr)
+		{
+			DefaultPawnClass = PlayerPawnBPClass.Class;
+		}
 	}
 }
 

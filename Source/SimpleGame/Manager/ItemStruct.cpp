@@ -60,7 +60,7 @@ TArray<const FAttributeInfo*> FItemBase::GetAttributes() const
 	TArray<const FAttributeInfo*> outAtts;
 	if (attributeList.Num() <= 0) return outAtts;
 
-	for (TSharedPtr<FAttributeInfo> setAttribute : attributeList) {
+	for (const TSharedPtr<FAttributeInfo>& setAttribute : attributeList) {
 		if (!setAttribute.IsValid()) continue;
 		outAtts.Emplace(setAttribute.Get());
 	}
