@@ -27,9 +27,11 @@ ASimpleGameMode::ASimpleGameMode()
 
 void ASimpleGameMode::StartPlay() 
 {
+	// must need call before super::startPlay
+	SimpleEngineUtil::ModeWorld = GetWorld();
+	
 	Super::StartPlay();
 
-	SimpleEngineUtil::ModeWorld = GetWorld();
 	GameFSM = NewObject<UFSM>(this, TEXT("SimpleGameFSM"));
 	if (!IsValid(GameFSM)) {
 		Logout(nullptr);

@@ -2,6 +2,7 @@
 
 
 #include "GameState/InventoryState.h"
+#include "Character/SwordManCharacter.h"
 #include "Manager/NetworkManager.h"
 #include "Manager/UIManager.h"
 

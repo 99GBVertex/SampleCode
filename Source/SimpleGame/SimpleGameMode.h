@@ -28,7 +28,7 @@ private:
 	void ChangeState(class UClass* LobbyStateClass);
 
 private:
-	TObjectPtr<UFSM> GameFSM;
+	UPROPERTY() TObjectPtr<UFSM> GameFSM;
 	EGameState LobbyCurState;
 	EGameState LobbyPrevState;
 };

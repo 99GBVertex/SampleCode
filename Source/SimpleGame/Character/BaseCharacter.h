@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FCharacterStateChanged, const UClass* /*Class*/);
+
 class UFSM;
 
 UCLASS()
@@ -29,6 +31,11 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-	UPROPERTY() TObjectPtr<UFSM> characterFSM;
+	// need interface?
+	UFUNCTION() void OnCharacterStateChanged(const UClass* Class);
+	virtual void InitFSM();
 
+protected:
+	UPROPERTY() TObjectPtr<UFSM> CharacterFSM;
+	FCharacterStateChanged OnStateChanged;
 };

@@ -8,6 +8,9 @@
 #include "Components/ScrollBox.h"
 
 #include "Manager/ItemManager.h"
+#include "Manager/GameEvent/EventType.h"
+#include "Manager/GameEvent/EventManager.h"
+#include "Misc/SimpleEngineUtil.h"
 
 #include "UI/UMG/Page/InventoryPage.h"
 #include "UI/UMG/Item/InventoryItem.h"
@@ -124,5 +127,7 @@ void UInventoryList::OnMount(UWidget* clickedWidget)
 	const bool bUpdated = UItemManager::Instance()->UpdateItemImmediately(cachedItem, EEquipState::EQUIP);
 	if (bUpdated && RootPage) {
 		RootPage->InventoryEquipStateChanged(this);
+		check(EVENT());
+		EVENT()->CallEvent(EEventType::msg_rpl_changeequip);
 	}
 }

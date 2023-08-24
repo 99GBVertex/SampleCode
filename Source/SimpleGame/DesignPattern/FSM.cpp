@@ -31,7 +31,7 @@ void UFSM::Tick(float DeltaTime)
 {
 	if (!StateBufferQueue.IsEmpty() && !bStateSetting)
 	{
-		const UClass* StateClass = nullptr;
+		TObjectPtr<const UClass> StateClass = nullptr;
 		if (StateBufferQueue.Dequeue(StateClass))
 		{
 			SetState(StateClass);
@@ -42,7 +42,7 @@ void UFSM::Tick(float DeltaTime)
 	/*
 	if (IsValid(CurrentState))
 	{
-		if (UState* FsmState = Cast<UState>(CurrentState))
+		if (TObjectPtr<UState> FsmState = Cast<UState>(CurrentState))
 		{
 			FsmState->Tick(DeltaTime);
 		}
@@ -50,14 +50,14 @@ void UFSM::Tick(float DeltaTime)
 	*/
 }
 
-void UFSM::AddState(UObject* State)
+void UFSM::AddState(TObjectPtr<UObject> State)
 {
 	check(Cast<UState>(State));
 
 	States.Emplace(State);
 }
 
-void UFSM::SetState(const UClass* Class)
+void UFSM::SetState(TObjectPtr<const UClass> Class)
 {
 	if (!IsValid(Class))
 	{
@@ -83,7 +83,7 @@ void UFSM::SetState(const UClass* Class)
 
 			if (IsValid(CurrentState))
 			{
-				UState* CurrentInterfaceState = Cast<UState>(CurrentState);
+				TObjectPtr<UState> CurrentInterfaceState = Cast<UState>(CurrentState);
 				CurrentInterfaceState->UnregisterDelegates();
 				CurrentInterfaceState->EndState();
 				CurrentInterfaceState->UnBindEventCalls();
@@ -103,7 +103,7 @@ void UFSM::SetState(const UClass* Class)
 
 			bStateSetting = true;
 
-			UState* CurrentInterfaceState = Cast<UState>(CurrentState);
+			TObjectPtr<UState> CurrentInterfaceState = Cast<UState>(CurrentState);
 			CurrentInterfaceState->RegisterDelegates();
 			CurrentInterfaceState->StartState();
 			CurrentInterfaceState->BindEventCalls();
@@ -118,12 +118,12 @@ void UFSM::SetState(const UClass* Class)
 	check(0);
 }
 
-UObject* UFSM::GetCurrentState() const
+TObjectPtr<UObject> UFSM::GetCurrentState() const
 {
 	return CurrentState;
 }
 
-UClass* UFSM::GetCurrentStateClass() const
+TObjectPtr<UClass> UFSM::GetCurrentStateClass() const
 {
 	if (IsValid(CurrentState))
 	{
@@ -133,12 +133,12 @@ UClass* UFSM::GetCurrentStateClass() const
 	return nullptr;
 }
 
-UObject* UFSM::GetPreState() const
+TObjectPtr<UObject> UFSM::GetPreState() const
 {
 	return PreState;
 }
 
-UClass* UFSM::GetPreStateClass() const
+TObjectPtr<UClass> UFSM::GetPreStateClass() const
 {
 	if (IsValid(PreState))
 	{
@@ -148,7 +148,7 @@ UClass* UFSM::GetPreStateClass() const
 	return nullptr;
 }
 
-UClass* UFSM::GetPreNaviStateClass() const
+TObjectPtr<UClass> UFSM::GetPreNaviStateClass() const
 {
 	if (NaviStateStack.Num() > 1)
 	{
@@ -158,9 +158,9 @@ UClass* UFSM::GetPreNaviStateClass() const
 	return nullptr;
 }
 
-UObject* UFSM::FindStateByClass(UClass* TargetClass) const
+TObjectPtr<UObject> UFSM::FindStateByClass(TObjectPtr<UClass> TargetClass) const
 {
-	UObject* const* TargetState = States.FindByPredicate([TargetClass](UObject* State) {
+	TObjectPtr<UObject> const* TargetState = States.FindByPredicate([TargetClass](const TObjectPtr<UObject>& State) {
 		return State->GetClass() == TargetClass;
 		});
 

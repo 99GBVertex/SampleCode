@@ -23,7 +23,7 @@ public:
 private:
 	virtual void Tick(float DeltaTime) override;
 	virtual TStatId GetStatId() const override { return Super::GetStatID(); }
-	bool bAllowTickable = false;	
+	bool bAllowTickable = false;
 	virtual bool IsAllowedToTick() const override { return bAllowTickable; }
 	//~ End FTickableGameObject
 public:
@@ -31,38 +31,38 @@ public:
 	void Init();
 	void Release();
 
-	void AddState(UObject* State);
-	void SetState(const UClass* Class);
+	void AddState(TObjectPtr<UObject> State);
+	void SetState(TObjectPtr<const UClass> Class);
 
-	UObject* GetCurrentState() const;
+	TObjectPtr<UObject> GetCurrentState() const;
 	template <typename StateType>
-	StateType* GetCurrentState() const;
+	TObjectPtr<StateType> GetCurrentState() const;
 
-	UClass* GetCurrentStateClass() const;
+	TObjectPtr<UClass> GetCurrentStateClass() const;
 
-	UObject* GetPreState() const;
+	TObjectPtr<UObject> GetPreState() const;
 	template <typename StateType>
-	StateType* GetPreState() const;
+	TObjectPtr<StateType> GetPreState() const;
 
-	UClass* GetPreStateClass() const;
+	TObjectPtr<UClass> GetPreStateClass() const;
 
-	UClass* GetPreNaviStateClass() const;
-	UObject* FindStateByClass(UClass* TargetClass) const;
-	TArray<UObject*> GetAllState() { return States; }
+	TObjectPtr<UClass> GetPreNaviStateClass() const;
+	TObjectPtr<UObject> FindStateByClass(TObjectPtr<UClass> TargetClass) const;
+	TArray<TObjectPtr<UObject>> GetAllState() { return States; }
 
 protected:
 	UPROPERTY() TObjectPtr<UObject> PreState = nullptr;
 	UPROPERTY() TObjectPtr<UObject> CurrentState = nullptr;
 
-	UPROPERTY() TArray<UObject*> NaviStateStack;
-	UPROPERTY() TArray<UObject*> States;
-	TQueue<const UClass*> StateBufferQueue;
+	UPROPERTY() TArray<TObjectPtr<UObject>> NaviStateStack;
+	UPROPERTY() TArray<TObjectPtr<UObject>> States;
+	TQueue<TObjectPtr<const UClass>> StateBufferQueue;
 
 	bool bStateSetting = false;
 };
 
 template <typename StateType>
-StateType* UFSM::GetCurrentState() const
+TObjectPtr<StateType> UFSM::GetCurrentState() const
 {
 	if (IsValid(CurrentState))
 	{
@@ -73,7 +73,7 @@ StateType* UFSM::GetCurrentState() const
 }
 
 template <typename StateType>
-StateType* UFSM::GetPreState() const
+TObjectPtr<StateType> UFSM::GetPreState() const
 {
 	if (IsValid(PreState))
 	{

@@ -2,14 +2,18 @@
 
 
 #include "BaseCharacter.h"
+#include "Components/SceneComponent.h"
 #include "DesignPattern/FSM.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	if (!HasAnyFlags(RF_ClassDefaultObject))
+	{
+		RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
+		CharacterFSM = NewObject<UFSM>(this, TEXT("CharacterFSM"));
+	}
 }
 
 // Called when the game starts or when spawned
@@ -33,3 +37,13 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
+void ABaseCharacter::OnCharacterStateChanged(const UClass* Class)
+{
+	if (IsValid(CharacterFSM))
+		CharacterFSM->SetState(Class);
+}
+
+void ABaseCharacter::InitFSM()
+{
+	this->OnStateChanged.AddUObject(this, &ThisClass::OnCharacterStateChanged);
+}
