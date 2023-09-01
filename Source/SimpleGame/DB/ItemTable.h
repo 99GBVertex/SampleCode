@@ -4,6 +4,7 @@
 #include "Engine/DataTable.h"
 #include "Define.h"
 #include "PaperSpriteAtlas.h"
+#include "NiagaraSystem.h"
 #include "ItemTable.generated.h"
 
 
@@ -33,4 +34,10 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Item")
 		TSoftObjectPtr<UStaticMesh> item_mesh_Optr;
+
+	UPROPERTY(EditAnywhere, Category = "Item")
+		FTransform item_mesh_ik_offset;
+
+	UPROPERTY(EditAnywhere, Category = "Item")
+		TSoftObjectPtr<UNiagaraSystem> item_effect_Optr;
 };

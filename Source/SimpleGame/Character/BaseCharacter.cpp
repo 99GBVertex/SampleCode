@@ -6,12 +6,14 @@
 #include "DesignPattern/FSM.h"
 
 // Sets default values
-ABaseCharacter::ABaseCharacter()
+ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	if (!HasAnyFlags(RF_ClassDefaultObject))
 	{
-		RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-
+		//CharacterRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+		//CharacterRoot->SetupAttachment(RootComponent);
+		//CharacterRoot->SetupAttachment(GetMesh());
 		CharacterFSM = NewObject<UFSM>(this, TEXT("CharacterFSM"));
 	}
 }

@@ -11,6 +11,7 @@
 #include "Manager/GameEvent/EventType.h"
 #include "Manager/GameEvent/EventManager.h"
 #include "Misc/SimpleEngineUtil.h"
+#include "Character/SwordManCharacter.h"
 
 #include "UI/UMG/Page/InventoryPage.h"
 #include "UI/UMG/Item/InventoryItem.h"
@@ -129,5 +130,14 @@ void UInventoryList::OnMount(UWidget* clickedWidget)
 		RootPage->InventoryEquipStateChanged(this);
 		check(EVENT());
 		EVENT()->CallEvent(EEventType::msg_rpl_changeequip);
+	}
+
+	TObjectPtr<APlayerController> const PlayerController = GetWorld()->GetFirstPlayerController();
+	if (IsValid(PlayerController))
+	{
+		TObjectPtr<ASwordManCharacter> swordMan = Cast<ASwordManCharacter>(PlayerController->GetCharacter());
+		if (IsValid(swordMan)) {
+			swordMan->AttachWeaponMesh(cachedItem);
+		}
 	}
 }

@@ -6,6 +6,7 @@
 
 #include "Define.h"
 #include "PaperSpriteAtlas.h"
+#include "NiagaraSystem.h"
 #include "ItemStruct.generated.h"
 
 struct FNetItemData;
@@ -27,7 +28,9 @@ struct SIMPLEGAME_API FResourceData
 
 public:
 	UPROPERTY(EditAnywhere)	TSoftObjectPtr<UStaticMesh> mesh_Optr = nullptr;
+	UPROPERTY(EditAnywhere)	FTransform mesh_ik_offset = FTransform{};
 	UPROPERTY(EditAnywhere) TSoftObjectPtr<UPaperSprite> sprite_Optr = nullptr;
+	UPROPERTY(EditAnywhere) TSoftObjectPtr<UNiagaraSystem> item_effect_Optr = nullptr;
 };
 
 USTRUCT()

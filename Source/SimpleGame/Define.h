@@ -14,6 +14,8 @@ static constexpr auto TARGET_CANVAS_NAME = TEXT("UICanvas");
 static constexpr int32 kDefaultWeaponInventorySize = 20;
 static constexpr int32 kDefaultArmorInventorySize = 50;
 
+static constexpr int32 kDefaultWeaponIndex = 1100001;
+
 static constexpr uint8 kDefaultSlotIdx = 0;
 
 #define SIMPLE_LOCTEXT(Key) FText::FromStringTable("/Game/DB/StringData/SimpleST.SimpleST", Key)

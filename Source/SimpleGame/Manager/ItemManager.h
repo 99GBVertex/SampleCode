@@ -28,7 +28,7 @@ public:
 
 	// table data
 	void MakeItemDataTable();
-	const FItemTable* GetItemData(int32 inIndex);
+	const TObjectPtr<FItemTable> GetItemData(int32 inIndex);
 
 	// bind network
 	bool CreateWeapon(int32 inIndex, TSharedPtr<FWeapon>& outWeapon);

@@ -17,7 +17,7 @@ class SIMPLEGAME_API ABaseCharacter : public ACharacter
 
 public:
 	// Sets default values for this character's properties
-	ABaseCharacter();
+	ABaseCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
 	// Called when the game starts or when spawned
@@ -38,4 +38,7 @@ protected:
 protected:
 	UPROPERTY() TObjectPtr<UFSM> CharacterFSM;
 	FCharacterStateChanged OnStateChanged;
+
+	UPROPERTY(VisibleAnywhere, Category = "BaseCharacter")
+		TObjectPtr<USceneComponent> CharacterRoot;
 };

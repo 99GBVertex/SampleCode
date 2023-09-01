@@ -33,7 +33,7 @@ protected:
 		ECharacterState CurrentCharacterAnimState;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SwordMan Flags", meta = (AllowPrivateAccess = "true"))
-		float speed;
+		float Speed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SwordMan Flags", meta = (AllowPrivateAccess = "true"))
 		bool bMontaging;

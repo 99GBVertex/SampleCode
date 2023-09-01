@@ -33,11 +33,13 @@ void UItemManager::MakeItemDataTable()
 		copyRow.itemType			= row->itemType;
 		copyRow.item_mesh_Optr		= row->item_mesh_Optr;
 		copyRow.item_sprite_Optr	= row->item_sprite_Optr;
+		copyRow.item_mesh_ik_offset = row->item_mesh_ik_offset;
+		copyRow.item_effect_Optr	= row->item_effect_Optr;
 		ItemTable.Emplace(MoveTemp(copyRow));
 	}
 }
 
-const FItemTable* UItemManager::GetItemData(int32 inIndex)
+const TObjectPtr<FItemTable> UItemManager::GetItemData(int32 inIndex)
 {
 	return ItemTable.FindByPredicate([inIndex](const FItemTable& row) {
 		return row.index == inIndex;
@@ -61,6 +63,8 @@ bool UItemManager::CreateWeapon(int32 inIndex, TSharedPtr<FWeapon>& outWeapon)
 
 	outWeapon->resourceData.sprite_Optr = curItem->item_sprite_Optr;
 	outWeapon->resourceData.mesh_Optr = curItem->item_mesh_Optr;
+	outWeapon->resourceData.mesh_ik_offset = curItem->item_mesh_ik_offset;
+	outWeapon->resourceData.item_effect_Optr = curItem->item_effect_Optr;
 
 	outWeapon->SetTableKey();
 	return true;

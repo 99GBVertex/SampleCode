@@ -6,7 +6,7 @@
 
 void UAISwordMan::Init()
 {
-	speed = 0.f;
+	Speed = 0.f;
 	bMontaging = false;
 }
 

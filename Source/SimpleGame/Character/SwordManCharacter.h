@@ -8,6 +8,10 @@
 
 class UAISwordMan;
 class UFSM;
+class UArrowComponent;
+struct FItemBase;
+struct FWeapon;
+struct FArmor;
 
 UCLASS()
 class SIMPLEGAME_API ASwordManCharacter : public ABaseCharacter
@@ -16,7 +20,7 @@ class SIMPLEGAME_API ASwordManCharacter : public ABaseCharacter
 
 public:
 	// Sets default values for this character's properties
-	ASwordManCharacter();
+	ASwordManCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,6 +41,10 @@ protected:
 public:
 	TObjectPtr<UAISwordMan> GetAI() { return SwordManAI; }
 
+	void AttachWeaponMesh(const TWeakPtr<const FItemBase> targetWeapon);
+protected:
+	void AttachWeaponMesh(int32 itemIndex);
+
 private:
 	UPROPERTY(VisibleAnywhere, Category = "SwordManCharacter")
 		USkeletalMeshComponent* SwordManSKMesh;
@@ -44,7 +52,12 @@ private:
 		TObjectPtr<UAISwordMan> SwordManAI;			
 
 	UPROPERTY(VisibleAnywhere, Category = "SwordManCharacter")
-		TObjectPtr<USceneComponent> HandL;
+		TObjectPtr<UArrowComponent> IKHandL;
 	UPROPERTY(VisibleAnywhere, Category = "SwordManCharacter")
-		TObjectPtr<USceneComponent> HandR;
+		TObjectPtr<UArrowComponent> IKHandR;
+
+	UPROPERTY(VisibleAnywhere, Category = "SwordManCharacter")
+		TObjectPtr<UStaticMeshComponent> IKWeaponPointL;
+	UPROPERTY(VisibleAnywhere, Category = "SwordManCharacter")
+		TObjectPtr<UStaticMeshComponent> IKWeaponPointR;
 };
