@@ -18,7 +18,7 @@ static constexpr int32 kDefaultWeaponIndex = 1100001;
 
 static constexpr uint8 kDefaultSlotIdx = 0;
 
-#define SIMPLE_LOCTEXT(Key) FText::FromStringTable("/Game/DB/StringData/SimpleST.SimpleST", Key)
+#define SIMPLE_LOCTEXT(Key) FText::FromStringTable("/Game/DB/SimpleGameStringTable.SimpleGameStringTable", Key)
 
 #define GET_ENUM_STRING(etype, evalue) ( (FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true) != nullptr) ? FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true)->GetNameStringByIndex((int32)evalue) : FString("Invalid - are you sure enum uses UENUM() macro?") )
 #define GET_ENUM_COUNT(etype) ( (FindObject<UEnum>(ANY_PACKAGE, TEXT(#etype), true) != nullptr ) ? FindObject<UEnum>(ANY_PACKAGE, TEXT(#etype), true)->NumEnums() - 1 : -1 )

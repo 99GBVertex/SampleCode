@@ -11,8 +11,8 @@ void FItemBase::BindNetData(const FNetItemData& InNetData)
 
 void FItemBase::SetTableKey()
 {
-	nameTableKey = FString::Format(TEXT("Item.{0}.name"), { index });
-	descriptTableKey = FString::Format(TEXT("Item.{0}.description"), { index });
+	nameTableKey = FString::Format(TEXT("item.weapon.{0}.name"), { index });
+	descriptTableKey = FString::Format(TEXT("item.weapon.{0}.description"), { index });
 }
 
 bool FItemBase::IsExpired() const
