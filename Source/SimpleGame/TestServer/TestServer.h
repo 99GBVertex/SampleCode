@@ -28,7 +28,7 @@ public:
 	void ServerOpen();
 	void ServerClose();
 
-	void AddBuffer(const USimplePacket* packet);
+	void AddBuffer(TObjectPtr<const USimplePacket> packet);
 
 	// FTickableGameObject interface
 	virtual void Tick(float DeltaTime) override;
@@ -39,13 +39,13 @@ public:
 	// End of FTickableGameObject interface
 
 private:
-	void Dispatch(const USimplePacket* qryPacket);
+	void Dispatch(TObjectPtr<const USimplePacket> qryPacket);
 
 	// Game User Fuctions
 	bool FillUserInventory(TArray<FNetItemData>& refItemDatas, TArray<FNetAttributeData>& refAttDatas);
 
 private:
-	TQueue<const USimplePacket*> packets;
+	TQueue<TObjectPtr<const USimplePacket>> packets;
 
 	// not have structure by user
 	TArray<FNetItemData> ItemDatas;

@@ -4,10 +4,10 @@
 #include "Misc/SimpleEngineUtil.h"
 #include "SimpleGameInstnace.h"
 
-UWorld* SimpleEngineUtil::ModeWorld = nullptr;
+TObjectPtr<UWorld> SimpleEngineUtil::ModeWorld = nullptr;
 FName SimpleEngineUtil::LandscapeProfileName = "LandscapeProfile";
 
-UWorld* GetModeWorld()
+TObjectPtr<UWorld> GetModeWorld()
 {
 	return SimpleEngineUtil::ModeWorld;
 }

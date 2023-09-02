@@ -23,7 +23,7 @@ public:
 	template <typename InstanceType>
 	static TObjectPtr<InstanceType> GetGameInstance()
 	{
-		UWorld* World = ModeWorld;
+		TObjectPtr<UWorld> World = ModeWorld;
 		if (World == nullptr || !World->IsValidLowLevel())
 			return nullptr;
 
@@ -33,7 +33,7 @@ public:
 	template<typename TimerHandleType>
 	static void ClearTimer(TimerHandleType& Handle)
 	{
-		UWorld* World = ModeWorld;
+		TObjectPtr<UWorld> World = ModeWorld;
 		if (World == nullptr)
 		{
 			return;
@@ -49,19 +49,19 @@ public:
 	* @return   GameMode
 	*/
 	template <typename ModeType>
-	static ModeType* GetGameMode()
+	static TObjectPtr<ModeType> GetGameMode()
 	{
-		UWorld* World = ModeWorld;
+		TObjectPtr<UWorld> World = ModeWorld;
 		if (World == nullptr)
 			return nullptr;
 
-		AGameModeBase* GameModeBase = World->GetAuthGameMode();
+		TObjectPtr<AGameModeBase> GameModeBase = World->GetAuthGameMode();
 		if (GameModeBase == nullptr)
 		{
 			return nullptr;
 		}
 
-		ModeType* ret = Cast<ModeType>(World->GetAuthGameMode());
+		TObjectPtr<ModeType> ret = Cast<ModeType>(World->GetAuthGameMode());
 
 		return ret;
 	}
@@ -73,13 +73,13 @@ public:
 	* @return   찾은 액터
 	*/
 	template <typename ActorType>
-	static ActorType* FindActor(UWorld* World, const FString& Name)
+	static TObjectPtr<ActorType> FindActor(UWorld* World, const FString& Name)
 	{
 		check(World);
 
 		for (TActorIterator<ActorType> ActorItr(World); ActorItr; ++ActorItr)
 		{
-			ActorType* Actor = *ActorItr;
+			TObjectPtr<ActorType> Actor = *ActorItr;
 			if (UKismetSystemLibrary::GetDisplayName(Actor) == Name)
 			{
 				return Actor;
@@ -95,7 +95,7 @@ public:
 	* @return   찾은 오브젝트
 	*/
 	template <typename ObjectType>
-	static ObjectType* FindObject(const FString& Name)
+	static TObjectPtr<ObjectType> FindObject(const FString& Name)
 	{
 		for (TObjectIterator<ObjectType> Itr; Itr; ++Itr)
 		{
@@ -113,7 +113,7 @@ public:
 	static FName LandscapeProfileName;
 
 	/** 모드 GetWorld. 아래의 GetModeWorld() 를 쓰자 */
-	static UWorld* ModeWorld;
+	static TObjectPtr<UWorld> ModeWorld;
 
 	static class UEventManager* GetPublicEventManager();
 	static class UResourceProvider* GetPublicResourceProvider();
@@ -122,4 +122,4 @@ public:
 /**
 * 모드 GetWorld
 */
-extern UWorld* GetModeWorld();
+extern TObjectPtr<UWorld> GetModeWorld();

@@ -7,7 +7,7 @@
 void UTestServer::Tick(float DeltaTime)
 {
 	if (!packets.IsEmpty()) {
-		const USimplePacket* curPacket;
+		TObjectPtr<const USimplePacket> curPacket;
 		packets.Dequeue(curPacket);
 
 		AsyncTask(ENamedThreads::GameThread, [this, curPacket]() {
@@ -21,12 +21,12 @@ TStatId UTestServer::GetStatId() const
 	RETURN_QUICK_DECLARE_CYCLE_STAT(UTestServer, STATGROUP_Tickables);
 }
 
-void ServerReflectHello(const USimplePacket* qryPacket)
+void ServerReflectHello(TObjectPtr<const USimplePacket> qryPacket)
 {
 	
 }
 
-void UTestServer::Dispatch(const USimplePacket* qryPacket)
+void UTestServer::Dispatch(TObjectPtr<const USimplePacket> qryPacket)
 {
 	if(!qryPacket) return;
 
@@ -35,9 +35,9 @@ void UTestServer::Dispatch(const USimplePacket* qryPacket)
 	{
 	case QryHello:
 	{
-		const UQrySimpleHello* qryHello = Cast<UQrySimpleHello>(qryPacket);
+		TObjectPtr<const UQrySimpleHello> qryHello = Cast<UQrySimpleHello>(qryPacket);
 		if (qryHello) {
-			URplSimpleHello* helloInfo = NewObject<URplSimpleHello>();
+			TObjectPtr<URplSimpleHello> helloInfo = NewObject<URplSimpleHello>();
 			helloInfo->protocolId = ProtocolId::RplHello;
 			helloInfo->accountTocken = 2313549687122;
 
@@ -48,9 +48,9 @@ void UTestServer::Dispatch(const USimplePacket* qryPacket)
 
 	case QryGetInventory:
 	{
-		const UQrySimpleGetInventory* qryInventory = Cast<UQrySimpleGetInventory>(qryPacket);
+		TObjectPtr<const UQrySimpleGetInventory> qryInventory = Cast<UQrySimpleGetInventory>(qryPacket);
 		if (qryInventory) {
-			URplSimpleGetInventory* rplInven = NewObject<URplSimpleGetInventory>();
+			TObjectPtr<URplSimpleGetInventory> rplInven = NewObject<URplSimpleGetInventory>();
 			rplInven->protocolId = ProtocolId::RplGetInventory;
 			FillUserInventory(rplInven->NetItemDatas, rplInven->NetAttDatas);
 
@@ -126,7 +126,7 @@ void UTestServer::ServerClose()
 	}
 }
 
-void UTestServer::AddBuffer(const USimplePacket* packet)
+void UTestServer::AddBuffer(TObjectPtr<const USimplePacket> packet)
 {
 	packets.Enqueue(packet);
 }

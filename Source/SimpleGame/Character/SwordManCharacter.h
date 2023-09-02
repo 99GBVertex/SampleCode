@@ -47,7 +47,7 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "SwordManCharacter")
-		USkeletalMeshComponent* SwordManSKMesh;
+		TObjectPtr<USkeletalMeshComponent> SwordManSKMesh;
 	UPROPERTY(VisibleAnywhere, Category = "SwordManCharacter")
 		TObjectPtr<UAISwordMan> SwordManAI;			
 
