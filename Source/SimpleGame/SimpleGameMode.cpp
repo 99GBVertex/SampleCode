@@ -77,7 +77,7 @@ void ASimpleGameMode::ChangeStateEnum(EGameState state)
 
 	case EGameState::NONE:
 	default:
-		/*UE_LOG(LogTemp, Log, TEXT("%s does not support prev / next state, requested : [%s]"), *GET_ENUM_STRING("EGameState", LobbyPrevState), *GET_ENUM_STRING("EGameState", LobbyCurState));*/
+		// log
 		break;
 	}
 }

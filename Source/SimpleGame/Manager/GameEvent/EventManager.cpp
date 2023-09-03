@@ -6,7 +6,8 @@
 void UEventManager::Init()
 {
 	StateEventPool.Empty();
-	StateEventPool.Reserve(GET_ENUM_COUNT(EEventType));
+	const int32 eventEnumCountWithoutCount = GET_ENUM_COUNT(EEventType) - 1;
+	StateEventPool.Reserve(eventEnumCountWithoutCount);
 	for (EEventType Iter : TEnumRange<EEventType>()) {
 		StateEventPool.Emplace(Iter, MakeShared<FEventStateCall, ESPMode::ThreadSafe>());
 	}

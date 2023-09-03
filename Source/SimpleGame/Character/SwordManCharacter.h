@@ -42,6 +42,7 @@ public:
 	TObjectPtr<UAISwordMan> GetAI() { return SwordManAI; }
 
 	void AttachWeaponMesh(const TWeakPtr<const FItemBase> targetWeapon);
+	void DetachWeaponMesh();
 protected:
 	void AttachWeaponMesh(int32 itemIndex);
 

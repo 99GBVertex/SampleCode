@@ -10,9 +10,9 @@ enum class EEventType : uint8
 	msg_rpl_Inventory,
 	msg_rpl_changeequip,
 
-	MAX
+	COUNT
 };
-ENUM_RANGE_BY_COUNT(EEventType, EEventType::MAX);
+ENUM_RANGE_BY_COUNT(EEventType, EEventType::COUNT);
 
 USTRUCT()
 struct SIMPLEGAME_API FEventMessage

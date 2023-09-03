@@ -88,10 +88,28 @@ void UEquipment::OnClieckedEquippedSlot(UWidget* clickedWidget)
 		if (IsValid(curEquipped) && curEquipped->GetItemButton() == clickedWidget)
 		{
 			const TWeakPtr<const FItemBase> cachedItem = curEquipped->GetCachedItemInfo();
-			const bool bUpdated = UItemManager::Instance()->UpdateItemImmediately(cachedItem, EEquipState::UNEQUIP);
-			if (bUpdated && RootPage) {
+			const bool bUpdatedDetach = UItemManager::Instance()->UpdateItemImmediately(cachedItem, EEquipState::UNEQUIP);
+			if (!bUpdatedDetach) {
+				return;
+			}
+
+			if (RootPage) {
 				RootPage->EquipmentEquipStateChanged(this);
 			}
+
+			const TObjectPtr<APlayerController> PlayerController = GetWorld()->GetFirstPlayerController();
+			if (IsValid(PlayerController))
+			{
+				const TObjectPtr<ASwordManCharacter> swordMan = Cast<ASwordManCharacter>(PlayerController->GetCharacter());
+				if (IsValid(swordMan)) {
+					swordMan->DetachWeaponMesh();
+				}
+			}
+
+#ifdef ADDTOSCREEN_DEBUGMESSAGE
+			const FString displayLog = FString::Format(TEXT("{0} {1}"), { cachedItem.Pin()->GetName().ToString(), SIMPLE_LOCSTRING(TEXT("useraction.inventory.detach")) });
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, displayLog, true, { 2.f, 2.f });
+#endif
 		}
 	}
 }

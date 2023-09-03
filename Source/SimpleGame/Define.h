@@ -19,10 +19,22 @@ static constexpr int32 kDefaultWeaponIndex = 1100001;
 static constexpr uint8 kDefaultSlotIdx = 0;
 
 #define SIMPLE_LOCTEXT(Key) FText::FromStringTable("/Game/DB/SimpleGameStringTable.SimpleGameStringTable", Key)
+#define SIMPLE_LOCSTRING(Key) FText::FromStringTable("/Game/DB/SimpleGameStringTable.SimpleGameStringTable", Key).ToString()
 
+// ANY_PACKAGE has been deprecated (5.1)
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 1
+#define GET_ENUM_STRING(etype, evalue) ( StaticEnum<etype>() != nullptr) ? StaticEnum<etype>()->GetNameStringByIndex((int32)evalue) : FString("Invalid - are you sure enum uses UENUM() macro?" )
+#define GET_ENUM_COUNT(etype) ( StaticEnum<etype>() != nullptr ) ? StaticEnum<etype>()->NumEnums() - 1 : -1
+#else
 #define GET_ENUM_STRING(etype, evalue) ( (FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true) != nullptr) ? FindObject<UEnum>(ANY_PACKAGE, TEXT(etype), true)->GetNameStringByIndex((int32)evalue) : FString("Invalid - are you sure enum uses UENUM() macro?") )
 #define GET_ENUM_COUNT(etype) ( (FindObject<UEnum>(ANY_PACKAGE, TEXT(#etype), true) != nullptr ) ? FindObject<UEnum>(ANY_PACKAGE, TEXT(#etype), true)->NumEnums() - 1 : -1 )
+#endif
 #define CONCAT(X,Y) X##Y
+
+#if WITH_EDITOR
+#define ADDTOSCREEN_DEBUGMESSAGE 1
+#endif
+
 
 UENUM(BlueprintType)
 enum class EProductSection : uint8

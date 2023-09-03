@@ -125,19 +125,28 @@ void UInventoryList::OnMount(UWidget* clickedWidget)
 		return;
 	}
 	const TWeakPtr<const FItemBase> cachedItem = itemPool[poolidx]->GetCachedItemInfo();
-	const bool bUpdated = UItemManager::Instance()->UpdateItemImmediately(cachedItem, EEquipState::EQUIP);
-	if (bUpdated && RootPage) {
-		RootPage->InventoryEquipStateChanged(this);
-		check(EVENT());
-		EVENT()->CallEvent(EEventType::msg_rpl_changeequip);
+	const bool bUpdatedMount = UItemManager::Instance()->UpdateItemImmediately(cachedItem, EEquipState::EQUIP);
+	if (!bUpdatedMount) {
+		return;
 	}
 
-	TObjectPtr<APlayerController> const PlayerController = GetWorld()->GetFirstPlayerController();
+	if (RootPage) {
+		RootPage->InventoryEquipStateChanged(this);
+		check(EVENT());
+		if(EVENT()) EVENT()->CallEvent(EEventType::msg_rpl_changeequip);
+	}
+
+	const TObjectPtr<APlayerController> PlayerController = GetWorld()->GetFirstPlayerController();
 	if (IsValid(PlayerController))
 	{
-		TObjectPtr<ASwordManCharacter> swordMan = Cast<ASwordManCharacter>(PlayerController->GetCharacter());
+		const TObjectPtr<ASwordManCharacter> swordMan = Cast<ASwordManCharacter>(PlayerController->GetCharacter());
 		if (IsValid(swordMan)) {
 			swordMan->AttachWeaponMesh(cachedItem);
 		}
 	}
+
+#ifdef ADDTOSCREEN_DEBUGMESSAGE
+	const FString displayLog = FString::Format(TEXT("{0} {1}"), { cachedItem.Pin()->GetName().ToString(), SIMPLE_LOCSTRING(TEXT("useraction.inventory.mount")) } );	
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, displayLog, true, {2.f, 2.f});
+#endif
 }

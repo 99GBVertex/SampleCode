@@ -142,6 +142,11 @@ void ASwordManCharacter::AttachWeaponMesh(const TWeakPtr<const FItemBase> target
 	}
 }
 
+void ASwordManCharacter::DetachWeaponMesh()
+{
+	AttachWeaponMesh(nullptr);
+}
+
 void ASwordManCharacter::AttachWeaponMesh(int32 itemIndex)
 {
 	TObjectPtr<const FItemTable> itemTableData = UItemManager::Instance()->GetItemData(itemIndex);
