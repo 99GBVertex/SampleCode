@@ -2,10 +2,13 @@
 
 
 #include "UI/UMG/Item/Equipment.h"
-#include "UI/UMG/Page/InventoryPage.h"
-#include "UI/UMG/Item/InventoryItem.h"
+
 #include "Manager/ItemManager.h"
 #include "Manager/ItemStruct.h"
+#include "Character/SwordManCharacter.h"
+
+#include "UI/UMG/Page/InventoryPage.h"
+#include "UI/UMG/Item/InventoryItem.h"
 #include "UI/UMG/SGButton.h"
 
 void UEquipment::UIConstuctor()
