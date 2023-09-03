@@ -1,12 +1,8 @@
 # SimpleGame
-By UE5
+By UE5.1
 
-portfolio related to the development of ui
+Side projects to view C++ Unreal Code styles
+basic structure of games using fsm
 
-There is resource management through 'ObjectLibrary'
-and basic structure of games using 'FSM'
-and a network system for example only
-so on
-
-The ui material is not related to optimization
 art clip retreived from "Olekzandr Zahorulko" art station
+mesh, anim clip retreived from Mixamo
