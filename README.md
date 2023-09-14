@@ -1,4 +1,4 @@
-# SimpleGame
+# SampleCode Project
 By UE5.1
 
 Side projects to view C++ Unreal Code styles
