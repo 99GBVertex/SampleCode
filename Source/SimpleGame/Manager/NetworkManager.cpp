@@ -100,7 +100,7 @@ void OnRplSimpleGetInventory(const USimplePacket* packet)
 		if (UNetworkManager::Instance()->NetWorkResultCodeCheck(rplPacket->protocolId, rplPacket->resultCode))
 		{
 			UItemManager::Instance()->BindInventoryData(rplPacket->NetItemDatas, rplPacket->NetAttDatas);
-			EVENT()->CallEvent(EEventType::msg_rpl_Inventory);
+			EVENT()->CallEvent(EEventType::msg_rpl_inventory);
 		}
 	}
 }

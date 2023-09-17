@@ -26,6 +26,7 @@ UEventManager* SimpleEngineUtil::GetPublicEventManager()
 	if (IsValid(SGInstance) && SGInstance->IsValidLowLevel()) {
 		return SGInstance->eventMgr;
 	}
+	ensure(0);
 	return nullptr;
 }
 

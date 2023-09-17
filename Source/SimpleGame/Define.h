@@ -35,6 +35,8 @@ static constexpr uint8 kDefaultSlotIdx = 0;
 #define ADDTOSCREEN_DEBUGMESSAGE 1
 #endif
 
+#define EVENTLOG 1
+
 
 UENUM(BlueprintType)
 enum class EProductSection : uint8

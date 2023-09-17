@@ -35,6 +35,9 @@ protected:
 	UFUNCTION() void OnCharacterStateChanged(const UClass* Class);
 	virtual void InitFSM();
 
+	void InputReleased(ETouchIndex::Type FingerIndex, FVector location);
+	void MouseReleased();
+
 protected:
 	UPROPERTY() TObjectPtr<UFSM> CharacterFSM;
 	FCharacterStateChanged OnStateChanged;

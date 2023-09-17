@@ -24,6 +24,31 @@ void UInventoryPage::UIDestructor()
 	Super::UIDestructor();
 }
 
+void UInventoryPage::BindEventCalls()
+{
+	EVENT()->AddUIReceiver(this, { EEventType::msg_input_release_nonui });
+}
+
+void UInventoryPage::OnBoundEventBroadCast(EEventType eventType, EventMsgPtr message)
+{
+	switch (eventType)
+	{
+	case EEventType::msg_input_release_nonui:
+	{
+		
+	}
+	break;
+
+	default:
+		break;
+	}
+}
+
+void UInventoryPage::UnBindEventCalls()
+{
+	EVENT()->AddUIReceiver(this, { EEventType::msg_input_release_nonui });
+}
+
 void UInventoryPage::InitUIInventoryPage()
 {
 	if (IsValid(Equipments)) {

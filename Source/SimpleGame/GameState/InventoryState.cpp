@@ -17,14 +17,14 @@ void UInventoryState::StartState()
 
 void UInventoryState::BindEventCalls()
 {
-	if(EVENT()) EVENT()->AddReceiver(this, { EEventType::msg_rpl_Inventory });
+	EVENT()->AddStateReceiver(this, { EEventType::msg_rpl_inventory });
 }
 
 void UInventoryState::OnBoundEventBroadCast(EEventType eventType, EventMsgPtr message)
 {
 	switch (eventType)
 	{
-	case EEventType::msg_rpl_Inventory:
+	case EEventType::msg_rpl_inventory:
 	{
 		//Create UI
 		UUIManager::Instance()->CreateUI(EUIObjectType::PAGE_INVENTORY);
@@ -38,7 +38,7 @@ void UInventoryState::OnBoundEventBroadCast(EEventType eventType, EventMsgPtr me
 
 void UInventoryState::UnBindEventCalls()
 {
-	if (EVENT()) EVENT()->AddReceiver(this, { EEventType::msg_rpl_Inventory });
+	EVENT()->AddStateReceiver(this, { EEventType::msg_rpl_inventory });
 }
 
 void UInventoryState::EndState()

@@ -132,8 +132,7 @@ void UInventoryList::OnMount(UWidget* clickedWidget)
 
 	if (RootPage) {
 		RootPage->InventoryEquipStateChanged(this);
-		check(EVENT());
-		if(EVENT()) EVENT()->CallEvent(EEventType::msg_rpl_changeequip);
+		EVENT()->CallEvent(EEventType::msg_rpl_changeequip);
 	}
 
 	const TObjectPtr<APlayerController> PlayerController = GetWorld()->GetFirstPlayerController();

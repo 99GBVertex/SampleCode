@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UI/UMG/SimpleUserWidget.h"
+#include "UI/UMG/SimpleMsgUserWidget.h"
 #include "InventoryPage.generated.h"
 
 class UEquipment;
@@ -13,7 +13,7 @@ class UInventoryList;
  * 
  */
 UCLASS()
-class SIMPLEGAME_API UInventoryPage : public USimpleUserWidget
+class SIMPLEGAME_API UInventoryPage : public USimpleMsgUserWidget
 {
 	GENERATED_BODY()
 
@@ -25,6 +25,12 @@ public:
 	//~ Begin USimpleUserWidget
 	virtual void UIConstuctor() override;
 	virtual void UIDestructor() override;
+	//~ End USimpleUserWidget
+
+	//~ Begin USimpleUserWidget
+	virtual void BindEventCalls() override;
+	virtual void OnBoundEventBroadCast(EEventType eventType, EventMsgPtr message) override;
+	virtual void UnBindEventCalls() override;
 	//~ End USimpleUserWidget
 
 public:

@@ -6,8 +6,9 @@
 UENUM()
 enum class EEventType : uint8
 {
+	msg_input_release_nonui,
 	msg_rpl_hello,
-	msg_rpl_Inventory,
+	msg_rpl_inventory,
 	msg_rpl_changeequip,
 
 	COUNT

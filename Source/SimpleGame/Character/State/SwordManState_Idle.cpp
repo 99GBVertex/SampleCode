@@ -26,8 +26,7 @@ void USwordManState_Idle::StartState()
 
 void USwordManState_Idle::BindEventCalls()
 {
-	check(EVENT());
-	if(EVENT()) EVENT()->AddReceiver(this, { EEventType::msg_rpl_changeequip });
+	EVENT()->AddStateReceiver(this, { EEventType::msg_rpl_changeequip });
 }
 
 void USwordManState_Idle::OnBoundEventBroadCast(EEventType eventType, EventMsgPtr message)
@@ -53,8 +52,7 @@ void USwordManState_Idle::OnBoundEventBroadCast(EEventType eventType, EventMsgPt
 
 void USwordManState_Idle::UnBindEventCalls()
 {
-	check(EVENT());
-	if (EVENT()) EVENT()->RemoveReceiver(this, { EEventType::msg_rpl_changeequip });
+	EVENT()->RemoveStateReceiver(this, { EEventType::msg_rpl_changeequip });
 }
 
 void USwordManState_Idle::EndState()

@@ -40,7 +40,6 @@ void ASwordManCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InitFSM();
 	InitAnimInstance();
 }
 
@@ -54,7 +53,6 @@ void ASwordManCharacter::Tick(float DeltaTime)
 void ASwordManCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void ASwordManCharacter::InitFSM()
